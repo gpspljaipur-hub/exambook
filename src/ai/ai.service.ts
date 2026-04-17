@@ -6,7 +6,6 @@
 //   private openai = new OpenAI({
 //     apiKey:
 //       // process.env.OPENAI_API_KEY ||
-//       "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",
 //   });
 
 //   async generateMCQ(board: string, cls: string, subject: string) {
