@@ -5,7 +5,6 @@
 // export class AiService {
 //   private openai = new OpenAI({
 //     apiKey:
-//       // process.env.OPENAI_API_KEY ||
 //   });
 
 //   async generateMCQ(board: string, cls: string, subject: string) {
