@@ -59,7 +59,7 @@ import axios from "axios";
 
 @Injectable()
 export class AiService {
-  private API_KEY = "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";
+  private API_KEY = process.env.GEORQ_API_KEY;
 
   async generateMCQ(board: string, cls: string, subject: string) {
     const prompt = `

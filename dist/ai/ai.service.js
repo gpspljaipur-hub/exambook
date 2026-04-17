@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const axios_1 = __importDefault(require("axios"));
 let AiService = class AiService {
     constructor() {
-        this.API_KEY = "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";
+        this.API_KEY = process.env.GEORQ_API_KEY;
     }
     async generateMCQ(board, cls, subject) {
         const prompt = `
