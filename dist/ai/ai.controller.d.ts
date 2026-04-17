@@ -1,18 +1,24 @@
-import { AiService } from './ai.service';
+import { AiService } from "./ai.service";
+import { QuestionsService } from "../questions/questions.service";
+import { ClassesService } from "../classes/classes.service";
+import { BoardsService } from "../board/boards.service";
+import { SubjectsService } from "../subject/subjects.service";
 export declare class AiController {
     private aiService;
-    constructor(aiService: AiService);
-    getModels(): Promise<{
+    private questionsService;
+    private boardsService;
+    private classesService;
+    private subjectsService;
+    constructor(aiService: AiService, questionsService: QuestionsService, boardsService: BoardsService, classesService: ClassesService, subjectsService: SubjectsService);
+    generate(body: any): Promise<{
         success: boolean;
-        data: any;
-    }>;
-    generate(prompt: string): Promise<{
-        success: boolean;
-        message: string;
-        data?: undefined;
-    } | {
-        success: boolean;
-        data: any;
-        message?: undefined;
+        count: number;
+        data: (Omit<import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {
+            _id: import("mongoose").Types.ObjectId;
+        } & {
+            __v: number;
+        } & {
+            id: string;
+        }, string | number | symbol> & Omit<any, "_id">)[];
     }>;
 }

@@ -1,5 +1,5 @@
-import { Token } from './schema/token.schema';
-import { Model } from 'mongoose';
+import { Token } from "./schema/token.schema";
+import { Model } from "mongoose";
 export declare class TokensService {
     private tokenModel;
     constructor(tokenModel: Model<Token>);

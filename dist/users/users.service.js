@@ -27,18 +27,18 @@ let UsersService = class UsersService {
     async sendOtp(phone) {
         const user = await this.userModel.findOne({ phone });
         if (user) {
-            throw new common_1.BadRequestException('Number already registered, please login');
+            throw new common_1.BadRequestException("Number already registered, please login");
         }
         const otp = this.generateOtp();
         return {
-            message: 'OTP sent successfully',
+            message: "OTP sent successfully",
             phone,
             otp,
         };
     }
     async verifyOtp(phone, otp) {
         if (!otp) {
-            throw new common_1.BadRequestException('OTP required');
+            throw new common_1.BadRequestException("OTP required");
         }
         let user = await this.userModel.findOne({ phone });
         if (!user) {
@@ -48,7 +48,7 @@ let UsersService = class UsersService {
             });
         }
         return {
-            message: 'Login successful',
+            message: "Login successful",
             user,
         };
     }

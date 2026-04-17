@@ -1,56 +1,113 @@
-import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+// import { Injectable } from "@nestjs/common";
+// import OpenAI from "openai";
+
+// @Injectable()
+// export class AiService {
+//   private openai = new OpenAI({
+//     apiKey:
+//       // process.env.OPENAI_API_KEY ||
+//       "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",
+//   });
+
+//   async generateMCQ(board: string, cls: string, subject: string) {
+//     const prompt = `
+// Generate 20 MCQ questions.
+
+// Board: ${board}
+// Class: ${cls}
+// Subject: ${subject}
+
+// Return ONLY JSON:
+// [
+//   {
+//     "question": "....",
+//     "options": ["A", "B", "C", "D"],
+//     "correctAnswer": "A",
+//     "explanation": "...."
+//   }
+// ]
+// `;
+
+//     try {
+//       const response = await this.openai.chat.completions.create({
+//         model: "gpt-4o-mini", // ✅ fast + cheaper
+//         messages: [
+//           {
+//             role: "user",
+//             content: prompt,
+//           },
+//         ],
+//       });
+
+//       let text = response.choices[0].message.content || "";
+
+//       console.log("👉 RAW AI:", text);
+
+//       // 🔥 clean JSON
+//       text = text.replace(/```json|```/g, "");
+
+//       return JSON.parse(text);
+//     } catch (error: any) {
+//       console.error("🔥 OPENAI ERROR:", error);
+//       throw error;
+//     }
+//   }
+// }
+
+import { Injectable } from "@nestjs/common";
+import axios from "axios";
 
 @Injectable()
 export class AiService {
-  private API_KEY = 'AIzaSyB-NVPYaOsz4icw7e-TdwFR_mCaZkFPUts'; // ⚠️ replace
+  private API_KEY = "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";
 
-  async listModels() {
+  async generateMCQ(board: string, cls: string, subject: string) {
+    const prompt = `
+Generate 20 MCQ questions.
+
+Board: ${board}
+Class: ${cls}
+Subject: ${subject}
+
+Return ONLY JSON:
+[
+  {
+    "question": "...",
+    "options": ["A","B","C","D"],
+    "correctAnswer": "A",
+    "explanation": "..."
+  }
+]
+`;
+
     try {
-      const response = await axios.get(
-        `https://generativelanguage.googleapis.com/v1beta/models?key=${this.API_KEY}`,
+      const response = await axios.post(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            {
+              role: "user",
+              content: prompt,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        },
       );
 
-      return response.data;
+      let text = response.data.choices[0].message.content;
+
+      text = text.replace(/```json|```/g, "");
+
+      return JSON.parse(text);
     } catch (error: any) {
+      console.error(error?.response?.data || error);
       throw error;
     }
-  }
-
-  async generateText(prompt: string) {
-    const models = [
-      //   'gemini-2.5-flash',
-      //   'gemini-2.5-pro',
-      'gemini-3-flash-preview',
-      //   'gemini-3.1-flash-lite-preview',
-      //   'ano-banana-pro-preview',
-      // 'gemini-robotics-er-1.5-preview',
-    ];
-
-    for (const model of models) {
-      try {
-        const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.API_KEY}`,
-          {
-            contents: [
-              {
-                parts: [{ text: prompt }],
-              },
-            ],
-          },
-        );
-
-        const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        return text || 'No response';
-      } catch (error: any) {
-        const status = error?.response?.status;
-        if (status !== 503) {
-          throw error;
-        }
-      }
-    }
-
-    throw new Error('All models are busy. Try again later.');
   }
 }

@@ -15,47 +15,70 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AiController = void 0;
 const common_1 = require("@nestjs/common");
 const ai_service_1 = require("./ai.service");
+const questions_service_1 = require("../questions/questions.service");
+const classes_service_1 = require("../classes/classes.service");
+const boards_service_1 = require("../board/boards.service");
+const subjects_service_1 = require("../subject/subjects.service");
 let AiController = class AiController {
-    constructor(aiService) {
+    constructor(aiService, questionsService, boardsService, classesService, subjectsService) {
         this.aiService = aiService;
+        this.questionsService = questionsService;
+        this.boardsService = boardsService;
+        this.classesService = classesService;
+        this.subjectsService = subjectsService;
     }
-    async getModels() {
-        const result = await this.aiService.listModels();
-        return {
-            success: true,
-            data: result,
-        };
-    }
-    async generate(prompt) {
-        if (!prompt) {
-            return {
-                success: false,
-                message: 'Prompt is required',
-            };
+    async generate(body) {
+        const { boardId, classId, subjectId } = body;
+        if (!boardId || !classId || !subjectId) {
+            throw new common_1.BadRequestException("All IDs are required");
         }
-        const result = await this.aiService.generateText(prompt);
+        const board = await this.boardsService.findById(boardId);
+        const cls = await this.classesService.findById(classId);
+        const subject = await this.subjectsService.findById(subjectId);
+        if (!board || !cls || !subject) {
+            throw new common_1.BadRequestException("Invalid board/class/subject");
+        }
+        let questions;
+        try {
+            questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name);
+        }
+        catch (err) {
+            throw new common_1.BadRequestException("AI generation failed");
+        }
+        if (!Array.isArray(questions)) {
+            throw new common_1.BadRequestException("Invalid AI response format");
+        }
+        const formatted = questions.map((q) => ({
+            question: q.question,
+            options: q.options,
+            correctAnswer: q.correctAnswer,
+            explanation: q.explanation,
+            boardId,
+            classId,
+            subjectId,
+        }));
+        const saved = await this.questionsService.saveMany(formatted);
         return {
             success: true,
-            data: result,
+            count: saved.length,
+            data: saved,
         };
     }
 };
 exports.AiController = AiController;
 __decorate([
-    (0, common_1.Get)('models'),
+    (0, common_1.Post)("generate-questions"),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AiController.prototype, "getModels", null);
-__decorate([
-    (0, common_1.Post)('generate'),
-    __param(0, (0, common_1.Body)('prompt')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AiController.prototype, "generate", null);
 exports.AiController = AiController = __decorate([
-    (0, common_1.Controller)('ai'),
-    __metadata("design:paramtypes", [ai_service_1.AiService])
+    (0, common_1.Controller)("ai"),
+    __metadata("design:paramtypes", [ai_service_1.AiService,
+        questions_service_1.QuestionsService,
+        boards_service_1.BoardsService,
+        classes_service_1.ClassesService,
+        subjects_service_1.SubjectsService])
 ], AiController);
 //# sourceMappingURL=ai.controller.js.map

@@ -22,12 +22,10 @@ let TokensService = class TokensService {
         this.tokenModel = tokenModel;
     }
     async saveToken(userId, token) {
-        console.log('🔥 SAVING TOKEN IN DB');
         const saved = await this.tokenModel.create({
             userId,
             token,
         });
-        console.log('✅ SAVED TOKEN:', saved);
         return saved;
     }
     async findToken(token) {

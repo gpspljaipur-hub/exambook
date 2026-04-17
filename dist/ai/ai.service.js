@@ -14,41 +14,49 @@ const common_1 = require("@nestjs/common");
 const axios_1 = __importDefault(require("axios"));
 let AiService = class AiService {
     constructor() {
-        this.API_KEY = 'AIzaSyB-NVPYaOsz4icw7e-TdwFR_mCaZkFPUts';
+        this.API_KEY = "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";
     }
-    async listModels() {
+    async generateMCQ(board, cls, subject) {
+        const prompt = `
+Generate 20 MCQ questions.
+
+Board: ${board}
+Class: ${cls}
+Subject: ${subject}
+
+Return ONLY JSON:
+[
+  {
+    "question": "...",
+    "options": ["A","B","C","D"],
+    "correctAnswer": "A",
+    "explanation": "..."
+  }
+]
+`;
         try {
-            const response = await axios_1.default.get(`https://generativelanguage.googleapis.com/v1beta/models?key=${this.API_KEY}`);
-            return response.data;
+            const response = await axios_1.default.post("https://api.groq.com/openai/v1/chat/completions", {
+                model: "llama-3.3-70b-versatile",
+                messages: [
+                    {
+                        role: "user",
+                        content: prompt,
+                    },
+                ],
+            }, {
+                headers: {
+                    Authorization: `Bearer ${this.API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            let text = response.data.choices[0].message.content;
+            text = text.replace(/```json|```/g, "");
+            return JSON.parse(text);
         }
         catch (error) {
+            console.error(error?.response?.data || error);
             throw error;
         }
-    }
-    async generateText(prompt) {
-        const models = [
-            'gemini-3-flash-preview',
-        ];
-        for (const model of models) {
-            try {
-                const response = await axios_1.default.post(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.API_KEY}`, {
-                    contents: [
-                        {
-                            parts: [{ text: prompt }],
-                        },
-                    ],
-                });
-                const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                return text || 'No response';
-            }
-            catch (error) {
-                const status = error?.response?.status;
-                if (status !== 503) {
-                    throw error;
-                }
-            }
-        }
-        throw new Error('All models are busy. Try again later.');
     }
 };
 exports.AiService = AiService;

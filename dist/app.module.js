@@ -14,6 +14,9 @@ const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
 const tokens_module_1 = require("./tokens/tokens.module");
 const ai_module_1 = require("./ai/ai.module");
+const classes_module_1 = require("./classes/classes.module");
+const subjects_module_1 = require("./subject/subjects.module");
+const boards_module_1 = require("./board/boards.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,13 +27,16 @@ exports.AppModule = AppModule = __decorate([
             mongoose_1.MongooseModule.forRootAsync({
                 inject: [config_1.ConfigService],
                 useFactory: (configService) => ({
-                    uri: configService.get('MONGO_URI'),
+                    uri: configService.get("MONGO_URI"),
                 }),
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             tokens_module_1.TokensModule,
             ai_module_1.AiModule,
+            boards_module_1.BoardsModule,
+            classes_module_1.ClassesModule,
+            subjects_module_1.SubjectsModule,
         ],
     })
 ], AppModule);
