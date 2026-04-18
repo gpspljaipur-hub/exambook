@@ -17,6 +17,7 @@ const ai_module_1 = require("./ai/ai.module");
 const classes_module_1 = require("./classes/classes.module");
 const subjects_module_1 = require("./subject/subjects.module");
 const boards_module_1 = require("./board/boards.module");
+const chapters_module_1 = require("./chapter/chapters.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,6 +38,7 @@ exports.AppModule = AppModule = __decorate([
             boards_module_1.BoardsModule,
             classes_module_1.ClassesModule,
             subjects_module_1.SubjectsModule,
+            chapters_module_1.ChaptersModule,
         ],
     })
 ], AppModule);

@@ -14,21 +14,42 @@ const common_1 = require("@nestjs/common");
 const axios_1 = __importDefault(require("axios"));
 let AiService = class AiService {
     constructor() {
-        this.API_KEY = process.env.GEORQ_API_KEY;
+        this.API_KEY = process.env.GROQ_API_KEY ||
+            "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";
     }
-    async generateMCQ(board, cls, subject) {
+    async generateMCQ(board, cls, subject, chapter, language) {
+        let finalLanguage = language;
+        if (subject.toLowerCase().includes("sanskrit")) {
+            finalLanguage = "Sanskrit";
+        }
+        else if (subject.toLowerCase().includes("hindi")) {
+            finalLanguage = "Hindi";
+        }
         const prompt = `
 Generate 20 MCQ questions.
 
 Board: ${board}
 Class: ${cls}
 Subject: ${subject}
+Chapter: ${chapter}
+
+Language: ${finalLanguage}
+
+STRICT RULES:
+- Questions MUST be in ${finalLanguage}
+- Options MUST be in ${finalLanguage}
+- Explanation MUST be in ${finalLanguage}
+- DO NOT mix languages
+- If language is Hindi or Sanskrit → DO NOT use English words
+- correctAnswer must be one of: A, B, C, or D
+- DO NOT return array in correctAnswer
 
 Return ONLY JSON:
+
 [
   {
     "question": "...",
-    "options": ["A","B","C","D"],
+    "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
     "correctAnswer": "A",
     "explanation": "..."
   }
@@ -50,11 +71,18 @@ Return ONLY JSON:
                 },
             });
             let text = response.data.choices[0].message.content;
+            console.log("👉 RAW AI:", text);
             text = text.replace(/```json|```/g, "");
-            return JSON.parse(text);
+            try {
+                return JSON.parse(text);
+            }
+            catch {
+                console.log("⚠️ Invalid JSON from AI:", text);
+                throw new Error("Invalid JSON format from AI");
+            }
         }
         catch (error) {
-            console.error(error?.response?.data || error);
+            console.error("GROQ ERROR:", error?.response?.data || error);
             throw error;
         }
     }

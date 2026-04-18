@@ -6,13 +6,15 @@ import { QuestionsModule } from "../questions/questions.module";
 import { BoardsModule } from "../board/boards.module";
 import { ClassesModule } from "../classes/classes.module"; // ✅
 import { SubjectsModule } from "../subject/subjects.module";
+import { ChaptersModule } from "../chapter/chapters.module";
 
 @Module({
   imports: [
     QuestionsModule,
     BoardsModule,
-    ClassesModule, // ✅ ADD THIS
+    ClassesModule,
     SubjectsModule,
+    ChaptersModule,
   ],
   providers: [AiService],
   controllers: [AiController],

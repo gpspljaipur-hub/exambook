@@ -19,28 +19,31 @@ const questions_service_1 = require("../questions/questions.service");
 const classes_service_1 = require("../classes/classes.service");
 const boards_service_1 = require("../board/boards.service");
 const subjects_service_1 = require("../subject/subjects.service");
+const chapters_service_1 = require("../chapter/chapters.service");
 let AiController = class AiController {
-    constructor(aiService, questionsService, boardsService, classesService, subjectsService) {
+    constructor(aiService, questionsService, boardsService, classesService, subjectsService, chaptersService) {
         this.aiService = aiService;
         this.questionsService = questionsService;
         this.boardsService = boardsService;
         this.classesService = classesService;
         this.subjectsService = subjectsService;
+        this.chaptersService = chaptersService;
     }
     async generate(body) {
-        const { boardId, classId, subjectId } = body;
-        if (!boardId || !classId || !subjectId) {
+        const { boardId, classId, subjectId, chapterId, language } = body;
+        if (!boardId || !classId || !subjectId || !chapterId || !language) {
             throw new common_1.BadRequestException("All IDs are required");
         }
         const board = await this.boardsService.findById(boardId);
         const cls = await this.classesService.findById(classId);
         const subject = await this.subjectsService.findById(subjectId);
-        if (!board || !cls || !subject) {
-            throw new common_1.BadRequestException("Invalid board/class/subject");
+        const chapter = await this.chaptersService.findById(chapterId);
+        if (!board || !cls || !subject || !chapter) {
+            throw new common_1.BadRequestException("Invalid board/class/subject/chapter");
         }
         let questions;
         try {
-            questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name);
+            questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name, chapter.name, language);
         }
         catch (err) {
             throw new common_1.BadRequestException("AI generation failed");
@@ -50,9 +53,11 @@ let AiController = class AiController {
         }
         const formatted = questions.map((q) => ({
             question: q.question,
-            options: q.options,
-            correctAnswer: q.correctAnswer,
-            explanation: q.explanation,
+            options: Array.isArray(q.options) ? q.options : [q.options],
+            correctAnswer: Array.isArray(q.correctAnswer)
+                ? q.correctAnswer[0]
+                : q.correctAnswer,
+            explanation: q.explanation || "",
             boardId,
             classId,
             subjectId,
@@ -79,6 +84,7 @@ exports.AiController = AiController = __decorate([
         questions_service_1.QuestionsService,
         boards_service_1.BoardsService,
         classes_service_1.ClassesService,
-        subjects_service_1.SubjectsService])
+        subjects_service_1.SubjectsService,
+        chapters_service_1.ChaptersService])
 ], AiController);
 //# sourceMappingURL=ai.controller.js.map

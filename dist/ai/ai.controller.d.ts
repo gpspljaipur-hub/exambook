@@ -3,13 +3,15 @@ import { QuestionsService } from "../questions/questions.service";
 import { ClassesService } from "../classes/classes.service";
 import { BoardsService } from "../board/boards.service";
 import { SubjectsService } from "../subject/subjects.service";
+import { ChaptersService } from "../chapter/chapters.service";
 export declare class AiController {
     private aiService;
     private questionsService;
     private boardsService;
     private classesService;
     private subjectsService;
-    constructor(aiService: AiService, questionsService: QuestionsService, boardsService: BoardsService, classesService: ClassesService, subjectsService: SubjectsService);
+    private chaptersService;
+    constructor(aiService: AiService, questionsService: QuestionsService, boardsService: BoardsService, classesService: ClassesService, subjectsService: SubjectsService, chaptersService: ChaptersService);
     generate(body: any): Promise<{
         success: boolean;
         count: number;
