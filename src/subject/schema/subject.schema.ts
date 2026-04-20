@@ -8,6 +8,9 @@ export class Subject {
   @Prop({ required: true })
   name!: string;
 
+  @Prop({ type: Types.ObjectId, ref: "Board", required: true })
+  boardId!: Types.ObjectId;
+
   @Prop({ type: Types.ObjectId, ref: "ClassModel", required: true })
   classId!: Types.ObjectId;
 }
