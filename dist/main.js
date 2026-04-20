@@ -36,11 +36,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const dotenv = __importStar(require("dotenv"));
+const os = __importStar(require("os"));
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    await app.listen(process.env.PORT ?? 3000);
     dotenv.config();
-    console.log(`Server running on http://localhost:${process.env.PORT ?? 3000}`);
+    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    const port = process.env.PORT ?? 3000;
+    await app.listen(port, '0.0.0.0');
+    console.log(`Server running on http://localhost:${port}`);
+    const interfaces = os.networkInterfaces();
+    let ipAddress = '0.0.0.0';
+    if (interfaces) {
+        for (const name of Object.keys(interfaces)) {
+            const ifaceList = interfaces[name];
+            if (ifaceList) {
+                for (const iface of ifaceList) {
+                    if (iface && iface.family === 'IPv4' && !iface.internal) {
+                        ipAddress = iface.address;
+                        break;
+                    }
+                }
+                if (ipAddress !== '0.0.0.0')
+                    break;
+            }
+        }
+    }
+    console.log(`Server also accessible on your network at http://${ipAddress}:${port}`);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
