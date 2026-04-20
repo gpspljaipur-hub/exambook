@@ -8,6 +8,12 @@ export class Chapter {
   @Prop({ required: true })
   name!: string;
 
+  @Prop({ type: Types.ObjectId, ref: "Board", required: true })
+  boardId!: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: "ClassModel", required: true })
+  classId!: Types.ObjectId;
+
   @Prop({ type: Types.ObjectId, ref: "Subject", required: true })
   subjectId!: Types.ObjectId;
 }

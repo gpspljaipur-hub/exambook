@@ -7,11 +7,20 @@ export class ChaptersController {
 
   @Post("add-chapter")
   addChapter(@Body() body: any) {
-    return this.chaptersService.addChapter(body.name, body.subjectId);
+    return this.chaptersService.addChapter(
+      body.name,
+      body.subjectId,
+      body.classId,
+      body.boardId,
+    );
   }
 
   @Post("get-chapter")
-  getChapters(@Body("subjectId") subjectId: string) {
-    return this.chaptersService.getChapters(subjectId);
+  getChapters(@Body() body: any) {
+    return this.chaptersService.getChapters(
+      body.subjectId,
+      body.classId,
+      body.boardId,
+    );
   }
 }

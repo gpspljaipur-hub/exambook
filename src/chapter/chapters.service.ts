@@ -9,21 +9,46 @@ export class ChaptersService {
     @InjectModel(Chapter.name)
     private chapterModel: Model<Chapter>,
   ) {}
-  async addChapter(name: string, subjectId: string) {
-    const exists = await this.chapterModel.findOne({ name, subjectId });
+  async addChapter(
+    name: string,
+    subjectId: string,
+    classId: string,
+    boardId: string,
+  ) {
+    const exists = await this.chapterModel.findOne({
+      name,
+      subjectId,
+      classId,
+      boardId,
+    });
 
     if (exists) {
       throw new BadRequestException("Chapter already exists");
     }
 
-    return this.chapterModel.create({ name, subjectId });
+    return this.chapterModel.create({
+      name,
+      subjectId,
+      classId,
+      boardId, // ✅ save it
+    });
   }
 
-  async getChapters(subjectId: string) {
-    return this.chapterModel.find({ subjectId }).populate({
-      path: "subjectId",
-      select: "name",
-    });
+  async getChapters(subjectId: string, classId: string, boardId: string) {
+    return this.chapterModel
+      .find({ subjectId, classId, boardId })
+      .populate({
+        path: "subjectId",
+        select: "name",
+      })
+      .populate({
+        path: "classId",
+        select: "name",
+      })
+      .populate({
+        path: "boardId",
+        select: "name",
+      });
   }
 
   async findById(id: string) {
