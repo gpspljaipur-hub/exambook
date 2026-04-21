@@ -20,6 +20,14 @@ __decorate([
     __metadata("design:type", String)
 ], Chapter.prototype, "name", void 0);
 __decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Board", required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Chapter.prototype, "boardId", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "ClassModel", required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Chapter.prototype, "classId", void 0);
+__decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Subject", required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Chapter.prototype, "subjectId", void 0);

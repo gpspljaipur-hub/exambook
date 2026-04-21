@@ -4,6 +4,7 @@ import { ClassesService } from "../classes/classes.service";
 import { BoardsService } from "../board/boards.service";
 import { SubjectsService } from "../subject/subjects.service";
 import { ChaptersService } from "../chapter/chapters.service";
+import { TestsService } from "../test/tests.service";
 export declare class AiController {
     private aiService;
     private questionsService;
@@ -11,9 +12,11 @@ export declare class AiController {
     private classesService;
     private subjectsService;
     private chaptersService;
-    constructor(aiService: AiService, questionsService: QuestionsService, boardsService: BoardsService, classesService: ClassesService, subjectsService: SubjectsService, chaptersService: ChaptersService);
+    private testsService;
+    constructor(aiService: AiService, questionsService: QuestionsService, boardsService: BoardsService, classesService: ClassesService, subjectsService: SubjectsService, chaptersService: ChaptersService, testsService: TestsService);
     generate(body: any): Promise<{
         success: boolean;
+        testId: import("mongoose").Types.ObjectId;
         count: number;
         data: (Omit<import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {
             _id: import("mongoose").Types.ObjectId;

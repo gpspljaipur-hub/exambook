@@ -4,23 +4,13 @@ import { SubjectsService } from "./subjects.service";
 @Controller("subjects")
 export class SubjectsController {
   constructor(private subjectsService: SubjectsService) {}
-
-  // ✅ Add Subject (with boardId)
   @Post("add-subject")
   addSubject(@Body() body: any) {
-    return this.subjectsService.addSubject(
-      body.name,
-      body.classId,
-      body.boardId, // ✅ added
-    );
+    return this.subjectsService.addSubject(body.name, body.classId);
   }
 
-  // ✅ Get Subjects (with boardId)
   @Post("get-subject")
-  getSubject(@Body() body: any) {
-    return this.subjectsService.getSubjects(
-      body.classId,
-      body.boardId, // ✅ added
-    );
+  getSubject(@Body("classId") classId: string) {
+    return this.subjectsService.getSubjects(classId);
   }
 }

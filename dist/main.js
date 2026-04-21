@@ -41,21 +41,21 @@ async function bootstrap() {
     dotenv.config();
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const port = process.env.PORT ?? 3000;
-    await app.listen(port, '0.0.0.0');
+    await app.listen(port, "0.0.0.0");
     console.log(`Server running on http://localhost:${port}`);
     const interfaces = os.networkInterfaces();
-    let ipAddress = '0.0.0.0';
+    let ipAddress = "0.0.0.0";
     if (interfaces) {
         for (const name of Object.keys(interfaces)) {
             const ifaceList = interfaces[name];
             if (ifaceList) {
                 for (const iface of ifaceList) {
-                    if (iface && iface.family === 'IPv4' && !iface.internal) {
+                    if (iface && iface.family === "IPv4" && !iface.internal) {
                         ipAddress = iface.address;
                         break;
                     }
                 }
-                if (ipAddress !== '0.0.0.0')
+                if (ipAddress !== "0.0.0.0")
                     break;
             }
         }

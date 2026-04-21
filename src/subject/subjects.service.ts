@@ -10,28 +10,17 @@ export class SubjectsService {
     private subjectModel: Model<Subject>,
   ) {}
 
-  // ✅ Add Subject
-  async addSubject(name: string, classId: string, boardId: string) {
-    const exists = await this.subjectModel.findOne({
-      name,
-      classId,
-      boardId,
-    });
+  async addSubject(name: string, classId: string) {
+    const exists = await this.subjectModel.findOne({ name, classId });
 
     if (exists) {
       throw new BadRequestException("Subject already exists");
     }
 
-    return this.subjectModel.create({
-      name,
-      classId,
-      boardId,
-    });
+    return this.subjectModel.create({ name, classId });
   }
-
-  // ✅ Get Subjects
-  async getSubjects(classId: string, boardId: string) {
-    return this.subjectModel.find({ classId, boardId }).populate({
+  async getSubjects(classId: string) {
+    return this.subjectModel.find({ classId }).populate({
       path: "classId",
       populate: { path: "boardId", select: "name" },
     });

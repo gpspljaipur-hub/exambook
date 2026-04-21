@@ -9,26 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubjectSchema = exports.Subject = void 0;
+exports.TestSchema = exports.Test = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-let Subject = class Subject {
+let Test = class Test {
 };
-exports.Subject = Subject;
-__decorate([
-    (0, mongoose_1.Prop)({ required: true }),
-    __metadata("design:type", String)
-], Subject.prototype, "name", void 0);
+exports.Test = Test;
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Board", required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
-], Subject.prototype, "boardId", void 0);
+], Test.prototype, "boardId", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "ClassModel", required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
-], Subject.prototype, "classId", void 0);
-exports.Subject = Subject = __decorate([
+], Test.prototype, "classId", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Subject", required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Test.prototype, "subjectId", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Chapter", required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Test.prototype, "chapterId", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true }),
+    __metadata("design:type", String)
+], Test.prototype, "language", void 0);
+exports.Test = Test = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
-], Subject);
-exports.SubjectSchema = mongoose_1.SchemaFactory.createForClass(Subject);
-//# sourceMappingURL=subject.schema.js.map
+], Test);
+exports.TestSchema = mongoose_1.SchemaFactory.createForClass(Test);
+//# sourceMappingURL=test.schema.js.map

@@ -8,27 +8,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SubjectSchema = exports.Subject = void 0;
-const mongoose_1 = require("@nestjs/mongoose");
-const mongoose_2 = require("mongoose");
-let Subject = class Subject {
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 };
-exports.Subject = Subject;
-__decorate([
-    (0, mongoose_1.Prop)({ required: true }),
-    __metadata("design:type", String)
-], Subject.prototype, "name", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Board", required: true }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
-], Subject.prototype, "boardId", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "ClassModel", required: true }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
-], Subject.prototype, "classId", void 0);
-exports.Subject = Subject = __decorate([
-    (0, mongoose_1.Schema)({ timestamps: true })
-], Subject);
-exports.SubjectSchema = mongoose_1.SchemaFactory.createForClass(Subject);
-//# sourceMappingURL=subject.schema.js.map
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TestsService = void 0;
+const common_1 = require("@nestjs/common");
+const mongoose_1 = require("@nestjs/mongoose");
+const test_schema_1 = require("./schema/test.schema");
+const mongoose_2 = require("mongoose");
+let TestsService = class TestsService {
+    constructor(testModel) {
+        this.testModel = testModel;
+    }
+    async create(data) {
+        return this.testModel.create(data);
+    }
+    async findById(id) {
+        return this.testModel.findById(id);
+    }
+};
+exports.TestsService = TestsService;
+exports.TestsService = TestsService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, mongoose_1.InjectModel)(test_schema_1.Test.name)),
+    __metadata("design:paramtypes", [mongoose_2.Model])
+], TestsService);
+//# sourceMappingURL=tests.service.js.map

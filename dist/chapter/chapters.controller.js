@@ -20,10 +20,10 @@ let ChaptersController = class ChaptersController {
         this.chaptersService = chaptersService;
     }
     addChapter(body) {
-        return this.chaptersService.addChapter(body.name, body.subjectId);
+        return this.chaptersService.addChapter(body.name, body.subjectId, body.classId, body.boardId);
     }
-    getChapters(subjectId) {
-        return this.chaptersService.getChapters(subjectId);
+    getChapters(body) {
+        return this.chaptersService.getChapters(body.subjectId, body.classId, body.boardId);
     }
 };
 exports.ChaptersController = ChaptersController;
@@ -36,9 +36,9 @@ __decorate([
 ], ChaptersController.prototype, "addChapter", null);
 __decorate([
     (0, common_1.Post)("get-chapter"),
-    __param(0, (0, common_1.Body)("subjectId")),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ChaptersController.prototype, "getChapters", null);
 exports.ChaptersController = ChaptersController = __decorate([

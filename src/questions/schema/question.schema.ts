@@ -22,6 +22,8 @@ export class Question {
 
   @Prop({ type: Types.ObjectId, ref: "ClassModel" })
   classId!: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: "Test" })
+  testId!: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: "Subject" })
   subjectId!: Types.ObjectId;

@@ -12,26 +12,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QuestionsService = void 0;
+exports.QuestionsController = void 0;
 const common_1 = require("@nestjs/common");
-const mongoose_1 = require("@nestjs/mongoose");
-const question_schema_1 = require("./schema/question.schema");
-const mongoose_2 = require("mongoose");
-let QuestionsService = class QuestionsService {
-    constructor(questionModel) {
-        this.questionModel = questionModel;
+const questions_service_1 = require("./questions.service");
+let QuestionsController = class QuestionsController {
+    constructor(questionsService) {
+        this.questionsService = questionsService;
     }
-    async getByTest(testId) {
-        return this.questionModel.find({ testId });
-    }
-    async saveMany(data) {
-        return this.questionModel.insertMany(data);
+    getByTest(testId) {
+        return this.questionsService.getByTest(testId);
     }
 };
-exports.QuestionsService = QuestionsService;
-exports.QuestionsService = QuestionsService = __decorate([
-    (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)(question_schema_1.Question.name)),
-    __metadata("design:paramtypes", [mongoose_2.Model])
-], QuestionsService);
-//# sourceMappingURL=questions.service.js.map
+exports.QuestionsController = QuestionsController;
+__decorate([
+    (0, common_1.Post)("get-by-test"),
+    __param(0, (0, common_1.Body)("testId")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], QuestionsController.prototype, "getByTest", null);
+exports.QuestionsController = QuestionsController = __decorate([
+    (0, common_1.Controller)("questions"),
+    __metadata("design:paramtypes", [questions_service_1.QuestionsService])
+], QuestionsController);
+//# sourceMappingURL=questions.controller.js.map

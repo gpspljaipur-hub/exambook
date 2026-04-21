@@ -9,7 +9,7 @@ export declare class ChaptersController {
     } & {
         id: string;
     }>;
-    getChapters(subjectId: string): Promise<(import("mongoose").Document<unknown, {}, import("./schema/chapter.schema").Chapter, {}, import("mongoose").DefaultSchemaOptions> & import("./schema/chapter.schema").Chapter & {
+    getChapters(body: any): Promise<(import("mongoose").Document<unknown, {}, import("./schema/chapter.schema").Chapter, {}, import("mongoose").DefaultSchemaOptions> & import("./schema/chapter.schema").Chapter & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;

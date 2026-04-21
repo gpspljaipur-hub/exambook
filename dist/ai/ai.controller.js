@@ -20,14 +20,16 @@ const classes_service_1 = require("../classes/classes.service");
 const boards_service_1 = require("../board/boards.service");
 const subjects_service_1 = require("../subject/subjects.service");
 const chapters_service_1 = require("../chapter/chapters.service");
+const tests_service_1 = require("../test/tests.service");
 let AiController = class AiController {
-    constructor(aiService, questionsService, boardsService, classesService, subjectsService, chaptersService) {
+    constructor(aiService, questionsService, boardsService, classesService, subjectsService, chaptersService, testsService) {
         this.aiService = aiService;
         this.questionsService = questionsService;
         this.boardsService = boardsService;
         this.classesService = classesService;
         this.subjectsService = subjectsService;
         this.chaptersService = chaptersService;
+        this.testsService = testsService;
     }
     async generate(body) {
         const { boardId, classId, subjectId, chapterId, language } = body;
@@ -51,6 +53,14 @@ let AiController = class AiController {
         if (!Array.isArray(questions)) {
             throw new common_1.BadRequestException("Invalid AI response format");
         }
+        const test = await this.testsService.create({
+            boardId,
+            classId,
+            subjectId,
+            chapterId,
+            language,
+        });
+        console.log("TEST CREATED:", test);
         const formatted = questions.map((q) => ({
             question: q.question,
             options: Array.isArray(q.options) ? q.options : [q.options],
@@ -61,10 +71,13 @@ let AiController = class AiController {
             boardId,
             classId,
             subjectId,
+            chapterId,
+            testId: test._id,
         }));
         const saved = await this.questionsService.saveMany(formatted);
         return {
             success: true,
+            testId: test._id,
             count: saved.length,
             data: saved,
         };
@@ -85,6 +98,7 @@ exports.AiController = AiController = __decorate([
         boards_service_1.BoardsService,
         classes_service_1.ClassesService,
         subjects_service_1.SubjectsService,
-        chapters_service_1.ChaptersService])
+        chapters_service_1.ChaptersService,
+        tests_service_1.TestsService])
 ], AiController);
 //# sourceMappingURL=ai.controller.js.map

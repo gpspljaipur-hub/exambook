@@ -102,7 +102,7 @@ import axios from "axios";
 export class AiService {
   private API_KEY =
     process.env.GROQ_API_KEY! ||
-    "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";
+    "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";
 
   async generateMCQ(
     board: string,

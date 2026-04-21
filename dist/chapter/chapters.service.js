@@ -21,16 +21,36 @@ let ChaptersService = class ChaptersService {
     constructor(chapterModel) {
         this.chapterModel = chapterModel;
     }
-    async addChapter(name, subjectId) {
-        const exists = await this.chapterModel.findOne({ name, subjectId });
+    async addChapter(name, subjectId, classId, boardId) {
+        const exists = await this.chapterModel.findOne({
+            name,
+            subjectId,
+            classId,
+            boardId,
+        });
         if (exists) {
             throw new common_1.BadRequestException("Chapter already exists");
         }
-        return this.chapterModel.create({ name, subjectId });
+        return this.chapterModel.create({
+            name,
+            subjectId,
+            classId,
+            boardId,
+        });
     }
-    async getChapters(subjectId) {
-        return this.chapterModel.find({ subjectId }).populate({
+    async getChapters(subjectId, classId, boardId) {
+        return this.chapterModel
+            .find({ subjectId, classId, boardId })
+            .populate({
             path: "subjectId",
+            select: "name",
+        })
+            .populate({
+            path: "classId",
+            select: "name",
+        })
+            .populate({
+            path: "boardId",
             select: "name",
         });
     }

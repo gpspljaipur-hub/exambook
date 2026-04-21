@@ -5,6 +5,7 @@ import { ClassesService } from "../classes/classes.service";
 import { BoardsService } from "../board/boards.service";
 import { SubjectsService } from "../subject/subjects.service";
 import { ChaptersService } from "../chapter/chapters.service";
+import { TestsService } from "../test/tests.service";
 
 @Controller("ai")
 export class AiController {
@@ -15,6 +16,7 @@ export class AiController {
     private classesService: ClassesService,
     private subjectsService: SubjectsService,
     private chaptersService: ChaptersService,
+    private testsService: TestsService,
   ) {}
 
   @Post("generate-questions")
@@ -50,36 +52,35 @@ export class AiController {
     if (!Array.isArray(questions)) {
       throw new BadRequestException("Invalid AI response format");
     }
-
-    // const formatted = questions.map((q: any) => ({
-    //   question: q.question,
-    //   options: q.options,
-    //   correctAnswer: q.correctAnswer,
-    //   explanation: q.explanation,
-    //   boardId,
-    //   classId,
-    //   subjectId,
-    // }));
-
-    const formatted = questions.map((q: any) => ({
-      question: q.question,
-
-      options: Array.isArray(q.options) ? q.options : [q.options],
-      correctAnswer: Array.isArray(q.correctAnswer)
-        ? q.correctAnswer[0] // take first value
-        : q.correctAnswer,
-
-      explanation: q.explanation || "",
-
+    const test = await this.testsService.create({
       boardId,
       classId,
       subjectId,
+      chapterId,
+      language,
+    });
+
+    console.log("TEST CREATED:", test);
+
+    const formatted = questions.map((q: any) => ({
+      question: q.question,
+      options: Array.isArray(q.options) ? q.options : [q.options],
+      correctAnswer: Array.isArray(q.correctAnswer)
+        ? q.correctAnswer[0]
+        : q.correctAnswer,
+      explanation: q.explanation || "",
+      boardId,
+      classId,
+      subjectId,
+      chapterId,
+      testId: test._id,
     }));
 
     const saved = await this.questionsService.saveMany(formatted);
 
     return {
       success: true,
+      testId: test._id,
       count: saved.length,
       data: saved,
     };

@@ -2,6 +2,7 @@ import { Document, Types } from "mongoose";
 export type SubjectDocument = Subject & Document;
 export declare class Subject {
     name: string;
+    boardId: Types.ObjectId;
     classId: Types.ObjectId;
 }
 export declare const SubjectSchema: import("mongoose").Schema<Subject, import("mongoose").Model<Subject, any, any, any, any, any, Subject>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Subject, Document<unknown, {}, Subject, {
@@ -14,6 +15,15 @@ export declare const SubjectSchema: import("mongoose").Schema<Subject, import("m
     id: string;
 }, {
     name?: import("mongoose").SchemaDefinitionProperty<string, Subject, Document<unknown, {}, Subject, {
+        id: string;
+    }, import("mongoose").DefaultSchemaOptions> & Omit<Subject & {
+        _id: Types.ObjectId;
+    } & {
+        __v: number;
+    }, "id"> & {
+        id: string;
+    }> | undefined;
+    boardId?: import("mongoose").SchemaDefinitionProperty<Types.ObjectId, Subject, Document<unknown, {}, Subject, {
         id: string;
     }, import("mongoose").DefaultSchemaOptions> & Omit<Subject & {
         _id: Types.ObjectId;

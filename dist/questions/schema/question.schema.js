@@ -40,6 +40,10 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Question.prototype, "classId", void 0);
 __decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Test" }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Question.prototype, "testId", void 0);
+__decorate([
     (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Subject" }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Question.prototype, "subjectId", void 0);

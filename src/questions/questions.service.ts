@@ -10,6 +10,10 @@ export class QuestionsService {
     private questionModel: Model<Question>,
   ) {}
 
+  async getByTest(testId: string) {
+    return this.questionModel.find({ testId });
+  }
+
   async saveMany(data: any[]) {
     return this.questionModel.insertMany(data);
   }
