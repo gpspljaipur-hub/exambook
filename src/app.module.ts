@@ -12,6 +12,7 @@ import { SubjectsModule } from "./subject/subjects.module";
 import { BoardsModule } from "./board/boards.module";
 import { ChaptersModule } from "./chapter/chapters.module";
 import { QuestionsModule } from "./questions/questions.module";
+import { ProfileModule } from "./profile/profile.module";
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -31,6 +32,7 @@ import { QuestionsModule } from "./questions/questions.module";
     SubjectsModule,
     ChaptersModule,
     QuestionsModule,
+    ProfileModule,
   ],
 })
 export class AppModule {}

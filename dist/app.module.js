@@ -19,6 +19,7 @@ const subjects_module_1 = require("./subject/subjects.module");
 const boards_module_1 = require("./board/boards.module");
 const chapters_module_1 = require("./chapter/chapters.module");
 const questions_module_1 = require("./questions/questions.module");
+const profile_module_1 = require("./profile/profile.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -41,6 +42,7 @@ exports.AppModule = AppModule = __decorate([
             subjects_module_1.SubjectsModule,
             chapters_module_1.ChaptersModule,
             questions_module_1.QuestionsModule,
+            profile_module_1.ProfileModule,
         ],
     })
 ], AppModule);
