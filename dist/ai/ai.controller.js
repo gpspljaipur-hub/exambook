@@ -36,21 +36,26 @@ let AiController = class AiController {
         if (!boardId || !classId || !subjectId || !chapterId || !language) {
             throw new common_1.BadRequestException("All IDs are required");
         }
+        console.log("STEP 1: START");
         const board = await this.boardsService.findById(boardId);
         const cls = await this.classesService.findById(classId);
         const subject = await this.subjectsService.findById(subjectId);
         const chapter = await this.chaptersService.findById(chapterId);
+        console.log("STEP 2: DATA FETCHED");
         if (!board || !cls || !subject || !chapter) {
             throw new common_1.BadRequestException("Invalid board/class/subject/chapter");
         }
         let questions;
         try {
             questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name, chapter.name, language);
+            console.log("STEP 3: AI DONE", questions?.length);
         }
         catch (err) {
+            console.log("❌ AI ERROR:", err);
             throw new common_1.BadRequestException("AI generation failed");
         }
         if (!Array.isArray(questions)) {
+            console.log("❌ NOT ARRAY:", questions);
             throw new common_1.BadRequestException("Invalid AI response format");
         }
         const test = await this.testsService.create({
@@ -60,7 +65,7 @@ let AiController = class AiController {
             chapterId,
             language,
         });
-        console.log("TEST CREATED:", test);
+        console.log("STEP 5: TEST CREATED", test._id);
         const formatted = questions.map((q) => ({
             question: q.question,
             options: Array.isArray(q.options) ? q.options : [q.options],
@@ -74,13 +79,18 @@ let AiController = class AiController {
             chapterId,
             testId: test._id,
         }));
+        console.log("STEP 6: FORMATTED", formatted.length);
         const saved = await this.questionsService.saveMany(formatted);
+        console.log("STEP 7: SAVED", saved.length);
         return {
             success: true,
-            testId: test._id,
+            testId: test._id.toString(),
             count: saved.length,
             data: saved,
         };
+    }
+    debugTest(testId) {
+        return this.questionsService.getByTest(testId);
     }
 };
 exports.AiController = AiController;
@@ -91,6 +101,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AiController.prototype, "generate", null);
+__decorate([
+    (0, common_1.Post)("debug-test"),
+    __param(0, (0, common_1.Body)("testId")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AiController.prototype, "debugTest", null);
 exports.AiController = AiController = __decorate([
     (0, common_1.Controller)("ai"),
     __metadata("design:paramtypes", [ai_service_1.AiService,

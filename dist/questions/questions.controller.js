@@ -20,6 +20,11 @@ let QuestionsController = class QuestionsController {
         this.questionsService = questionsService;
     }
     getByTest(testId) {
+        console.log("👉 CONTROLLER TEST ID:", testId);
+        return this.questionsService.getByTest(testId);
+    }
+    async debugTest(testId) {
+        console.log("DEBUG TEST ID:", testId);
         return this.questionsService.getByTest(testId);
     }
 };
@@ -31,6 +36,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], QuestionsController.prototype, "getByTest", null);
+__decorate([
+    (0, common_1.Post)("debug-test"),
+    __param(0, (0, common_1.Body)("testId")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], QuestionsController.prototype, "debugTest", null);
 exports.QuestionsController = QuestionsController = __decorate([
     (0, common_1.Controller)("questions"),
     __metadata("design:paramtypes", [questions_service_1.QuestionsService])

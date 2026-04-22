@@ -22,7 +22,14 @@ let QuestionsService = class QuestionsService {
         this.questionModel = questionModel;
     }
     async getByTest(testId) {
-        return this.questionModel.find({ testId });
+        console.log("👉 RECEIVED TEST ID:", testId);
+        const all = await this.questionModel.find();
+        console.log("👉 ALL TEST IDs IN DB:", all.map((q) => q.testId));
+        const data = await this.questionModel.find({
+            testId: new mongoose_2.Types.ObjectId(testId),
+        });
+        console.log("👉 FILTERED RESULT:", data);
+        return data;
     }
     async saveMany(data) {
         return this.questionModel.insertMany(data);

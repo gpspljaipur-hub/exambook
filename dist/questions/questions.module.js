@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const question_schema_1 = require("./schema/question.schema");
 const questions_service_1 = require("./questions.service");
+const questions_controller_1 = require("./questions.controller");
 let QuestionsModule = class QuestionsModule {
 };
 exports.QuestionsModule = QuestionsModule;
@@ -22,6 +23,7 @@ exports.QuestionsModule = QuestionsModule = __decorate([
             ]),
         ],
         providers: [questions_service_1.QuestionsService],
+        controllers: [questions_controller_1.QuestionsController],
         exports: [questions_service_1.QuestionsService],
     })
 ], QuestionsModule);

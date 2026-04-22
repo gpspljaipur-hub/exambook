@@ -27,10 +27,14 @@ export class AiController {
       throw new BadRequestException("All IDs are required");
     }
 
+    console.log("STEP 1: START");
+
     const board = await this.boardsService.findById(boardId);
     const cls = await this.classesService.findById(classId);
     const subject = await this.subjectsService.findById(subjectId);
     const chapter = await this.chaptersService.findById(chapterId);
+
+    console.log("STEP 2: DATA FETCHED");
 
     if (!board || !cls || !subject || !chapter) {
       throw new BadRequestException("Invalid board/class/subject/chapter");
@@ -45,13 +49,17 @@ export class AiController {
         chapter.name,
         language,
       );
+      console.log("STEP 3: AI DONE", questions?.length);
     } catch (err) {
+      console.log("❌ AI ERROR:", err);
       throw new BadRequestException("AI generation failed");
     }
 
     if (!Array.isArray(questions)) {
+      console.log("❌ NOT ARRAY:", questions);
       throw new BadRequestException("Invalid AI response format");
     }
+
     const test = await this.testsService.create({
       boardId,
       classId,
@@ -60,7 +68,20 @@ export class AiController {
       language,
     });
 
-    console.log("TEST CREATED:", test);
+    console.log("STEP 5: TEST CREATED", test._id);
+    // const formatted = questions.map((q: any) => ({
+    //   question: q.question,
+    //   options: Array.isArray(q.options) ? q.options : [q.options],
+    //   correctAnswer: Array.isArray(q.correctAnswer)
+    //     ? q.correctAnswer[0]
+    //     : q.correctAnswer,
+    //   explanation: q.explanation || "",
+    //   boardId,
+    //   classId,
+    //   subjectId,
+    //   chapterId,
+    //   testId: test._id.toString(),
+    // }));
 
     const formatted = questions.map((q: any) => ({
       question: q.question,
@@ -76,13 +97,21 @@ export class AiController {
       testId: test._id,
     }));
 
+    console.log("STEP 6: FORMATTED", formatted.length);
+
     const saved = await this.questionsService.saveMany(formatted);
 
+    console.log("STEP 7: SAVED", saved.length);
     return {
       success: true,
-      testId: test._id,
+      testId: test._id.toString(),
       count: saved.length,
       data: saved,
     };
+  }
+
+  @Post("debug-test")
+  debugTest(@Body("testId") testId: string) {
+    return this.questionsService.getByTest(testId);
   }
 }
