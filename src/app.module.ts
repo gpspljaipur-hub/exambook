@@ -24,7 +24,7 @@ import { ChapterAiModule } from "./chapter-ai/chapter-ai.module";
       useFactory: (configService: ConfigService) => ({
         // uri: configService.get<string>("MONGO_URI"),
         uri: configService.get<string>(
-          "mongodb+srv://rajatsonisoni77_db_user:uvSHLGfIBTjqN1oa@cluster0.hysct9e.mongodb.net/mydb?retryWrites=true&w=majority",
+          "mongodb+srv://rajatsonisoni77_db_user:uvSHLGfIBTjqN1oa@cluster0.hysct9e.mongodb.net/?appName=Cluster0",
         ),
       }),
     }),
