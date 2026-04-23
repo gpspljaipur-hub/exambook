@@ -21,33 +21,52 @@ let UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
     }
+    normalizePhone(phone) {
+        return phone.toString().replace(/\D/g, "").slice(-10);
+    }
     generateOtp() {
         return Math.floor(1000 + Math.random() * 9000).toString();
     }
     async sendOtp(phone) {
-        const user = await this.userModel.findOne({ phone });
+        if (!phone) {
+            throw new common_1.BadRequestException("Phone number required");
+        }
+        const normalizedPhone = this.normalizePhone(phone);
+        console.log("Normalized Phone:", normalizedPhone);
+        const user = await this.userModel.findOne({
+            phone: normalizedPhone,
+        });
         if (user) {
             throw new common_1.BadRequestException("Number already registered, please login");
         }
         const otp = this.generateOtp();
         return {
+            success: true,
             message: "OTP sent successfully",
-            phone,
+            phone: normalizedPhone,
             otp,
         };
     }
     async verifyOtp(phone, otp) {
+        if (!phone) {
+            throw new common_1.BadRequestException("Phone number required");
+        }
         if (!otp) {
             throw new common_1.BadRequestException("OTP required");
         }
-        let user = await this.userModel.findOne({ phone });
+        const normalizedPhone = this.normalizePhone(phone);
+        console.log("Verify Phone:", normalizedPhone);
+        let user = await this.userModel.findOne({
+            phone: normalizedPhone,
+        });
         if (!user) {
             user = await this.userModel.create({
-                phone,
+                phone: normalizedPhone,
                 isVerified: true,
             });
         }
         return {
+            success: true,
             message: "Login successful",
             user,
         };

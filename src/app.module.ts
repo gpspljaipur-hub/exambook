@@ -13,6 +13,8 @@ import { BoardsModule } from "./board/boards.module";
 import { ChaptersModule } from "./chapter/chapters.module";
 import { QuestionsModule } from "./questions/questions.module";
 import { ProfileModule } from "./profile/profile.module";
+import { ChatModule } from "./chat/schema/chat.module";
+import { ChapterAiModule } from "./chapter-ai/chapter-ai.module";
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -20,7 +22,10 @@ import { ProfileModule } from "./profile/profile.module";
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>("MONGO_URI"),
+        // uri: configService.get<string>("MONGO_URI"),
+        uri: configService.get<string>(
+          "mongodb+srv://rajatsonisoni77_db_user:uvSHLGfIBTjqN1oa@cluster0.hysct9e.mongodb.net/mydb?retryWrites=true&w=majority",
+        ),
       }),
     }),
     UsersModule,
@@ -33,6 +38,8 @@ import { ProfileModule } from "./profile/profile.module";
     ChaptersModule,
     QuestionsModule,
     ProfileModule,
+    ChatModule,
+    ChapterAiModule,
   ],
 })
 export class AppModule {}

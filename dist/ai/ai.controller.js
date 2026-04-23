@@ -48,14 +48,11 @@ let AiController = class AiController {
         let questions;
         try {
             questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name, chapter.name, language);
-            console.log("STEP 3: AI DONE", questions?.length);
         }
         catch (err) {
-            console.log("❌ AI ERROR:", err);
             throw new common_1.BadRequestException("AI generation failed");
         }
         if (!Array.isArray(questions)) {
-            console.log("❌ NOT ARRAY:", questions);
             throw new common_1.BadRequestException("Invalid AI response format");
         }
         const test = await this.testsService.create({

@@ -20,6 +20,8 @@ const boards_module_1 = require("./board/boards.module");
 const chapters_module_1 = require("./chapter/chapters.module");
 const questions_module_1 = require("./questions/questions.module");
 const profile_module_1 = require("./profile/profile.module");
+const chat_module_1 = require("./chat/schema/chat.module");
+const chapter_ai_module_1 = require("./chapter-ai/chapter-ai.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -43,6 +45,8 @@ exports.AppModule = AppModule = __decorate([
             chapters_module_1.ChaptersModule,
             questions_module_1.QuestionsModule,
             profile_module_1.ProfileModule,
+            chat_module_1.ChatModule,
+            chapter_ai_module_1.ChapterAiModule,
         ],
     })
 ], AppModule);

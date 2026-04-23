@@ -49,14 +49,11 @@ export class AiController {
         chapter.name,
         language,
       );
-      console.log("STEP 3: AI DONE", questions?.length);
     } catch (err) {
-      console.log("❌ AI ERROR:", err);
       throw new BadRequestException("AI generation failed");
     }
 
     if (!Array.isArray(questions)) {
-      console.log("❌ NOT ARRAY:", questions);
       throw new BadRequestException("Invalid AI response format");
     }
 

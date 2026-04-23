@@ -3,6 +3,7 @@ export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
     sendOtp(phone: string): Promise<{
+        success: boolean;
         message: string;
         phone: string;
         otp: string;
@@ -10,10 +11,11 @@ export declare class AuthController {
     verifyOtp(body: any): Promise<{
         message: string;
         user: {
+            success: boolean;
             message: string;
-            user: import("mongoose").Document<unknown, {}, import("../users/schema/user.schema").User, {}, import("mongoose").DefaultSchemaOptions> & import("../users/schema/user.schema").User & {
+            user: import("mongoose").Document<unknown, {}, import("../users/schema/user.schema").User, {}, import("mongoose").DefaultSchemaOptions> & import("../users/schema/user.schema").User & Required<{
                 _id: import("mongoose").Types.ObjectId;
-            } & {
+            }> & {
                 __v: number;
             } & {
                 id: string;
