@@ -62,9 +62,8 @@ import { ChapterAiModule } from "./chapter-ai/chapter-ai.module";
 
 @Module({
   imports: [
-    // 🔥 TEMP FIX (hardcoded Mongo URI)
     MongooseModule.forRoot(
-      "mongodb+srv://rajatsonisoni77_db_user:YOUR_NEW_PASSWORD@cluster0.hysct9e.mongodb.net/exambook?retryWrites=true&w=majority",
+      "mongodb+srv://rajatsonisoni77_db_user:uvSHLGfIBTjqN1oa@cluster0.hysct9e.mongodb.net/?appName=Cluster0",
     ),
 
     UsersModule,

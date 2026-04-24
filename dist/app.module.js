@@ -27,7 +27,7 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRoot("mongodb+srv://rajatsonisoni77_db_user:YOUR_NEW_PASSWORD@cluster0.hysct9e.mongodb.net/exambook?retryWrites=true&w=majority"),
+            mongoose_1.MongooseModule.forRoot("mongodb+srv://rajatsonisoni77_db_user:uvSHLGfIBTjqN1oa@cluster0.hysct9e.mongodb.net/?appName=Cluster0"),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             tokens_module_1.TokensModule,
