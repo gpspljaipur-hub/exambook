@@ -21,6 +21,18 @@ let TestsService = class TestsService {
     constructor(testModel) {
         this.testModel = testModel;
     }
+    async findExistingTest(filter) {
+        return this.testModel.findOne({
+            boardId: new mongoose_2.Types.ObjectId(filter.boardId),
+            classId: new mongoose_2.Types.ObjectId(filter.classId),
+            subjectId: new mongoose_2.Types.ObjectId(filter.subjectId),
+            chapterId: new mongoose_2.Types.ObjectId(filter.chapterId),
+            language: filter.language,
+        });
+    }
+    async findOne(filter) {
+        return this.testModel.findOne(filter);
+    }
     async create(data) {
         return this.testModel.create(data);
     }

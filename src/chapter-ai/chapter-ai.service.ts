@@ -7,7 +7,7 @@ import { Model, Types } from "mongoose";
 export class ChapterAiService {
   private API_KEY =
     process.env.GROQ_API_KEY ||
-    "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";
+    "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";
 
   constructor(
     @InjectModel("Chapter") private chapterModel: Model<any>,

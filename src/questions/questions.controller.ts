@@ -8,7 +8,6 @@ export class QuestionsController {
 
   @Post("get-by-test")
   getByTest(@Body("testId") testId: string) {
-    console.log("👉 CONTROLLER TEST ID:", testId);
     return this.questionsService.getByTest(testId); // ✅ call service
   }
 

@@ -20,7 +20,6 @@ let QuestionsController = class QuestionsController {
         this.questionsService = questionsService;
     }
     getByTest(testId) {
-        console.log("👉 CONTROLLER TEST ID:", testId);
         return this.questionsService.getByTest(testId);
     }
     async debugTest(testId) {

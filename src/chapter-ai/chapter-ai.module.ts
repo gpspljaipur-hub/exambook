@@ -11,14 +11,11 @@ import { ClassSchema } from "../classes/schema/class.schema";
 import { SubjectSchema } from "../subject/schema/subject.schema";
 import { ChapterSchema } from "../chapter/schema/chapter.schema";
 
-// ⚠️ मान लो ये schemas तुमने already बनाए हैं
-
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: "ChapterContent", schema: ChapterContentSchema },
 
-      // 👇 ये names IMPORTANT हैं
       { name: "Board", schema: BoardSchema },
       { name: "Class", schema: ClassSchema },
       { name: "Subject", schema: SubjectSchema },

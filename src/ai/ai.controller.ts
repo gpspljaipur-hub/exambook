@@ -6,7 +6,6 @@ import { BoardsService } from "../board/boards.service";
 import { SubjectsService } from "../subject/subjects.service";
 import { ChaptersService } from "../chapter/chapters.service";
 import { TestsService } from "../test/tests.service";
-
 @Controller("ai")
 export class AiController {
   constructor(
@@ -22,24 +21,46 @@ export class AiController {
   @Post("generate-questions")
   async generate(@Body() body: any) {
     const { boardId, classId, subjectId, chapterId, language } = body;
-
     if (!boardId || !classId || !subjectId || !chapterId || !language) {
       throw new BadRequestException("All IDs are required");
     }
-
-    console.log("STEP 1: START");
-
     const board = await this.boardsService.findById(boardId);
     const cls = await this.classesService.findById(classId);
     const subject = await this.subjectsService.findById(subjectId);
     const chapter = await this.chaptersService.findById(chapterId);
 
-    console.log("STEP 2: DATA FETCHED");
-
     if (!board || !cls || !subject || !chapter) {
       throw new BadRequestException("Invalid board/class/subject/chapter");
     }
+    const existingTest = await this.testsService.findOne({
+      boardId,
+      classId,
+      subjectId,
+      chapterId,
+      language,
+    });
+    if (existingTest) {
+      const existingQuestions = await this.questionsService.getByTest(
+        existingTest._id,
+      );
 
+      if (existingQuestions.length > 0) {
+        return {
+          success: true,
+          fromCache: true,
+          testId: existingTest._id.toString(),
+          count: existingQuestions.length,
+          data: existingQuestions,
+        };
+      }
+    }
+    const test = await this.testsService.create({
+      boardId,
+      classId,
+      subjectId,
+      chapterId,
+      language,
+    });
     let questions;
     try {
       questions = await this.aiService.generateMCQ(
@@ -50,36 +71,13 @@ export class AiController {
         language,
       );
     } catch (err) {
+      console.error("AI ERROR:", err);
       throw new BadRequestException("AI generation failed");
     }
 
     if (!Array.isArray(questions)) {
       throw new BadRequestException("Invalid AI response format");
     }
-
-    const test = await this.testsService.create({
-      boardId,
-      classId,
-      subjectId,
-      chapterId,
-      language,
-    });
-
-    console.log("STEP 5: TEST CREATED", test._id);
-    // const formatted = questions.map((q: any) => ({
-    //   question: q.question,
-    //   options: Array.isArray(q.options) ? q.options : [q.options],
-    //   correctAnswer: Array.isArray(q.correctAnswer)
-    //     ? q.correctAnswer[0]
-    //     : q.correctAnswer,
-    //   explanation: q.explanation || "",
-    //   boardId,
-    //   classId,
-    //   subjectId,
-    //   chapterId,
-    //   testId: test._id.toString(),
-    // }));
-
     const formatted = questions.map((q: any) => ({
       question: q.question,
       options: Array.isArray(q.options) ? q.options : [q.options],
@@ -92,15 +90,12 @@ export class AiController {
       subjectId,
       chapterId,
       testId: test._id,
+      language,
     }));
-
-    console.log("STEP 6: FORMATTED", formatted.length);
-
     const saved = await this.questionsService.saveMany(formatted);
-
-    console.log("STEP 7: SAVED", saved.length);
     return {
       success: true,
+      fromCache: false,
       testId: test._id.toString(),
       count: saved.length,
       data: saved,
@@ -108,7 +103,7 @@ export class AiController {
   }
 
   @Post("debug-test")
-  debugTest(@Body("testId") testId: string) {
+  async debugTest(@Body("testId") testId: string) {
     return this.questionsService.getByTest(testId);
   }
 }

@@ -16,6 +16,19 @@ export declare class AiController {
     constructor(aiService: AiService, questionsService: QuestionsService, boardsService: BoardsService, classesService: ClassesService, subjectsService: SubjectsService, chaptersService: ChaptersService, testsService: TestsService);
     generate(body: any): Promise<{
         success: boolean;
+        fromCache: boolean;
+        testId: string;
+        count: number;
+        data: (import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {
+            _id: import("mongoose").Types.ObjectId;
+        } & {
+            __v: number;
+        } & {
+            id: string;
+        })[];
+    } | {
+        success: boolean;
+        fromCache: boolean;
         testId: string;
         count: number;
         data: (Omit<import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {

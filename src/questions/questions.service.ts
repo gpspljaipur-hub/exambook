@@ -10,22 +10,27 @@ export class QuestionsService {
     private questionModel: Model<Question>,
   ) {}
 
-  async getByTest(testId: string) {
-    console.log("👉 RECEIVED TEST ID:", testId);
+  // async getByTest(testId: string) {
+  //   const all = await this.questionModel.find();
+  //   console.log(
+  //     "👉 ALL TEST IDs IN DB:",
+  //     all.map((q) => q.testId),
+  //   );
 
-    const all = await this.questionModel.find();
-    console.log(
-      "👉 ALL TEST IDs IN DB:",
-      all.map((q) => q.testId),
-    );
+  //   const data = await this.questionModel.find({
+  //     testId: new Types.ObjectId(testId),
+  //   });
 
-    const data = await this.questionModel.find({
-      testId: new Types.ObjectId(testId),
-    });
+  //   console.log("👉 FILTERED RESULT:", data);
 
-    console.log("👉 FILTERED RESULT:", data);
+  //   return data;
+  // }
 
-    return data;
+  // async saveMany(data: any[]) {
+  //   return this.questionModel.insertMany(data);
+  // }
+  async getByTest(testId: string | Types.ObjectId) {
+    return this.questionModel.find({ testId });
   }
 
   async saveMany(data: any[]) {

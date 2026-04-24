@@ -8,7 +8,7 @@ import { Chat } from "./schema/chat.schema";
 export class ChatService {
   private API_KEY =
     process.env.GROQ_API_KEY ||
-    "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";
+    "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";
 
   constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>) {}
 

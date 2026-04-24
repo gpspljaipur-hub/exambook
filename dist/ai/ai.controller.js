@@ -36,24 +36,31 @@ let AiController = class AiController {
         if (!boardId || !classId || !subjectId || !chapterId || !language) {
             throw new common_1.BadRequestException("All IDs are required");
         }
-        console.log("STEP 1: START");
         const board = await this.boardsService.findById(boardId);
         const cls = await this.classesService.findById(classId);
         const subject = await this.subjectsService.findById(subjectId);
         const chapter = await this.chaptersService.findById(chapterId);
-        console.log("STEP 2: DATA FETCHED");
         if (!board || !cls || !subject || !chapter) {
             throw new common_1.BadRequestException("Invalid board/class/subject/chapter");
         }
-        let questions;
-        try {
-            questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name, chapter.name, language);
-        }
-        catch (err) {
-            throw new common_1.BadRequestException("AI generation failed");
-        }
-        if (!Array.isArray(questions)) {
-            throw new common_1.BadRequestException("Invalid AI response format");
+        const existingTest = await this.testsService.findOne({
+            boardId,
+            classId,
+            subjectId,
+            chapterId,
+            language,
+        });
+        if (existingTest) {
+            const existingQuestions = await this.questionsService.getByTest(existingTest._id);
+            if (existingQuestions.length > 0) {
+                return {
+                    success: true,
+                    fromCache: true,
+                    testId: existingTest._id.toString(),
+                    count: existingQuestions.length,
+                    data: existingQuestions,
+                };
+            }
         }
         const test = await this.testsService.create({
             boardId,
@@ -62,7 +69,17 @@ let AiController = class AiController {
             chapterId,
             language,
         });
-        console.log("STEP 5: TEST CREATED", test._id);
+        let questions;
+        try {
+            questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name, chapter.name, language);
+        }
+        catch (err) {
+            console.error("AI ERROR:", err);
+            throw new common_1.BadRequestException("AI generation failed");
+        }
+        if (!Array.isArray(questions)) {
+            throw new common_1.BadRequestException("Invalid AI response format");
+        }
         const formatted = questions.map((q) => ({
             question: q.question,
             options: Array.isArray(q.options) ? q.options : [q.options],
@@ -75,18 +92,18 @@ let AiController = class AiController {
             subjectId,
             chapterId,
             testId: test._id,
+            language,
         }));
-        console.log("STEP 6: FORMATTED", formatted.length);
         const saved = await this.questionsService.saveMany(formatted);
-        console.log("STEP 7: SAVED", saved.length);
         return {
             success: true,
+            fromCache: false,
             testId: test._id.toString(),
             count: saved.length,
             data: saved,
         };
     }
-    debugTest(testId) {
+    async debugTest(testId) {
         return this.questionsService.getByTest(testId);
     }
 };
@@ -103,7 +120,7 @@ __decorate([
     __param(0, (0, common_1.Body)("testId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AiController.prototype, "debugTest", null);
 exports.AiController = AiController = __decorate([
     (0, common_1.Controller)("ai"),
