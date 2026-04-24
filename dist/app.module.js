@@ -1,28 +1,14 @@
 "use strict";
-var __decorate =
-  (this && this.__decorate) ||
-  function (decorators, target, key, desc) {
-    var c = arguments.length,
-      r =
-        c < 3
-          ? target
-          : desc === null
-            ? (desc = Object.getOwnPropertyDescriptor(target, key))
-            : desc,
-      d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
-      r = Reflect.decorate(decorators, target, key, desc);
-    else
-      for (var i = decorators.length - 1; i >= 0; i--)
-        if ((d = decorators[i]))
-          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return (c > 3 && r && Object.defineProperty(target, key, r), r);
-  };
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
-const config_1 = require("@nestjs/config");
 const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
 const tokens_module_1 = require("./tokens/tokens.module");
@@ -35,37 +21,26 @@ const questions_module_1 = require("./questions/questions.module");
 const profile_module_1 = require("./profile/profile.module");
 const chat_module_1 = require("./chat/schema/chat.module");
 const chapter_ai_module_1 = require("./chapter-ai/chapter-ai.module");
-let AppModule = class AppModule {};
+let AppModule = class AppModule {
+};
 exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate(
-  [
+exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-      imports: [
-        config_1.ConfigModule.forRoot({ isGlobal: true }),
-        mongoose_1.MongooseModule.forRootAsync({
-          inject: [config_1.ConfigService],
-          useFactory: (configService) => ({
-            // uri: configService.get("MONGO_URI"),
-            uri: configService.get(
-              "mongodb+srv://rajatsonisoni77_db_user:uvSHLGfIBTjqN1oa@cluster0.hysct9e.mongodb.net/?appName=Cluster0",
-            ),
-          }),
-        }),
-        users_module_1.UsersModule,
-        auth_module_1.AuthModule,
-        tokens_module_1.TokensModule,
-        ai_module_1.AiModule,
-        boards_module_1.BoardsModule,
-        classes_module_1.ClassesModule,
-        subjects_module_1.SubjectsModule,
-        chapters_module_1.ChaptersModule,
-        questions_module_1.QuestionsModule,
-        profile_module_1.ProfileModule,
-        chat_module_1.ChatModule,
-        chapter_ai_module_1.ChapterAiModule,
-      ],
-    }),
-  ],
-  AppModule,
-);
+        imports: [
+            mongoose_1.MongooseModule.forRoot("mongodb+srv://rajatsonisoni77_db_user:YOUR_NEW_PASSWORD@cluster0.hysct9e.mongodb.net/exambook?retryWrites=true&w=majority"),
+            users_module_1.UsersModule,
+            auth_module_1.AuthModule,
+            tokens_module_1.TokensModule,
+            ai_module_1.AiModule,
+            boards_module_1.BoardsModule,
+            classes_module_1.ClassesModule,
+            subjects_module_1.SubjectsModule,
+            chapters_module_1.ChaptersModule,
+            questions_module_1.QuestionsModule,
+            profile_module_1.ProfileModule,
+            chat_module_1.ChatModule,
+            chapter_ai_module_1.ChapterAiModule,
+        ],
+    })
+], AppModule);
 //# sourceMappingURL=app.module.js.map
