@@ -41,6 +41,7 @@ let AiController = class AiController {
         const classObjectId = new mongoose_1.Types.ObjectId(classId);
         const subjectObjectId = new mongoose_1.Types.ObjectId(subjectId);
         const chapterObjectId = new mongoose_1.Types.ObjectId(chapterId);
+        console.log("chapterObjectId:", chapterObjectId);
         const board = await this.boardsService.findById(boardId);
         const cls = await this.classesService.findById(classId);
         const subject = await this.subjectsService.findById(subjectId);

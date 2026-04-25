@@ -149,6 +149,7 @@ export class AiController {
     const classObjectId = new Types.ObjectId(classId);
     const subjectObjectId = new Types.ObjectId(subjectId);
     const chapterObjectId = new Types.ObjectId(chapterId);
+    console.log("chapterObjectId:", chapterObjectId);
 
     const board = await this.boardsService.findById(boardId);
     const cls = await this.classesService.findById(classId);
