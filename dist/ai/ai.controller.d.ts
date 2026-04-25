@@ -5,6 +5,7 @@ import { BoardsService } from "../board/boards.service";
 import { SubjectsService } from "../subject/subjects.service";
 import { ChaptersService } from "../chapter/chapters.service";
 import { TestsService } from "../test/tests.service";
+import { Types } from "mongoose";
 export declare class AiController {
     private aiService;
     private questionsService;
@@ -20,7 +21,7 @@ export declare class AiController {
         testId: string;
         count: number;
         data: (import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {
-            _id: import("mongoose").Types.ObjectId;
+            _id: Types.ObjectId;
         } & {
             __v: number;
         } & {
@@ -32,7 +33,7 @@ export declare class AiController {
         testId: string;
         count: number;
         data: (Omit<import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {
-            _id: import("mongoose").Types.ObjectId;
+            _id: Types.ObjectId;
         } & {
             __v: number;
         } & {
@@ -40,7 +41,7 @@ export declare class AiController {
         }, string | number | symbol> & Omit<any, "_id">)[];
     }>;
     debugTest(testId: string): Promise<(import("mongoose").Document<unknown, {}, import("../questions/schema/question.schema").Question, {}, import("mongoose").DefaultSchemaOptions> & import("../questions/schema/question.schema").Question & {
-        _id: import("mongoose").Types.ObjectId;
+        _id: Types.ObjectId;
     } & {
         __v: number;
     } & {

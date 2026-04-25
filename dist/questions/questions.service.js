@@ -22,7 +22,9 @@ let QuestionsService = class QuestionsService {
         this.questionModel = questionModel;
     }
     async getByTest(testId) {
-        return this.questionModel.find({ testId });
+        return this.questionModel.find({
+            testId: new mongoose_2.Types.ObjectId(testId),
+        });
     }
     async saveMany(data) {
         return this.questionModel.insertMany(data);

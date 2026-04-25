@@ -21,6 +21,7 @@ const boards_service_1 = require("../board/boards.service");
 const subjects_service_1 = require("../subject/subjects.service");
 const chapters_service_1 = require("../chapter/chapters.service");
 const tests_service_1 = require("../test/tests.service");
+const mongoose_1 = require("mongoose");
 let AiController = class AiController {
     constructor(aiService, questionsService, boardsService, classesService, subjectsService, chaptersService, testsService) {
         this.aiService = aiService;
@@ -36,6 +37,10 @@ let AiController = class AiController {
         if (!boardId || !classId || !subjectId || !chapterId || !language) {
             throw new common_1.BadRequestException("All IDs are required");
         }
+        const boardObjectId = new mongoose_1.Types.ObjectId(boardId);
+        const classObjectId = new mongoose_1.Types.ObjectId(classId);
+        const subjectObjectId = new mongoose_1.Types.ObjectId(subjectId);
+        const chapterObjectId = new mongoose_1.Types.ObjectId(chapterId);
         const board = await this.boardsService.findById(boardId);
         const cls = await this.classesService.findById(classId);
         const subject = await this.subjectsService.findById(subjectId);
@@ -43,32 +48,36 @@ let AiController = class AiController {
         if (!board || !cls || !subject || !chapter) {
             throw new common_1.BadRequestException("Invalid board/class/subject/chapter");
         }
-        const existingTest = await this.testsService.findOne({
-            boardId,
-            classId,
-            subjectId,
-            chapterId,
+        let test = await this.testsService.findOne({
+            boardId: boardObjectId,
+            classId: classObjectId,
+            subjectId: subjectObjectId,
+            chapterId: chapterObjectId,
             language,
         });
-        if (existingTest) {
-            const existingQuestions = await this.questionsService.getByTest(existingTest._id);
+        if (test) {
+            const existingQuestions = await this.questionsService.getByTest(test._id.toString());
+            console.log("Existing Questions:", existingQuestions.length);
             if (existingQuestions.length > 0) {
                 return {
                     success: true,
                     fromCache: true,
-                    testId: existingTest._id.toString(),
+                    testId: test._id.toString(),
                     count: existingQuestions.length,
                     data: existingQuestions,
                 };
             }
+            console.log("Empty questions → calling AI");
         }
-        const test = await this.testsService.create({
-            boardId,
-            classId,
-            subjectId,
-            chapterId,
-            language,
-        });
+        if (!test) {
+            test = await this.testsService.create({
+                boardId: boardObjectId,
+                classId: classObjectId,
+                subjectId: subjectObjectId,
+                chapterId: chapterObjectId,
+                language,
+            });
+        }
         let questions;
         try {
             questions = await this.aiService.generateMCQ(board.name, cls.name, subject.name, chapter.name, language);
@@ -87,10 +96,10 @@ let AiController = class AiController {
                 ? q.correctAnswer[0]
                 : q.correctAnswer,
             explanation: q.explanation || "",
-            boardId,
-            classId,
-            subjectId,
-            chapterId,
+            boardId: boardObjectId,
+            classId: classObjectId,
+            subjectId: subjectObjectId,
+            chapterId: chapterObjectId,
             testId: test._id,
             language,
         }));

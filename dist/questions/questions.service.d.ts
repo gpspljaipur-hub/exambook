@@ -3,7 +3,7 @@ import { Model, Types } from "mongoose";
 export declare class QuestionsService {
     private questionModel;
     constructor(questionModel: Model<Question>);
-    getByTest(testId: string | Types.ObjectId): Promise<(import("mongoose").Document<unknown, {}, Question, {}, import("mongoose").DefaultSchemaOptions> & Question & {
+    getByTest(testId: string): Promise<(import("mongoose").Document<unknown, {}, Question, {}, import("mongoose").DefaultSchemaOptions> & Question & {
         _id: Types.ObjectId;
     } & {
         __v: number;

@@ -14,7 +14,7 @@ export class Test {
   @Prop({ type: Types.ObjectId, ref: "Subject", required: true })
   subjectId!: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: "Chapter", required: true })
+  @Prop({ type: Types.ObjectId, ref: "Chapter", required: true, unique: true })
   chapterId!: Types.ObjectId;
 
   @Prop({ required: true })

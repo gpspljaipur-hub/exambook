@@ -28,7 +28,7 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Test.prototype, "subjectId", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Chapter", required: true }),
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Chapter", required: true, unique: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Test.prototype, "chapterId", void 0);
 __decorate([

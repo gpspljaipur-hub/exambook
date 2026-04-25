@@ -13,7 +13,6 @@ export class QuestionsService {
   // async getByTest(testId: string) {
   //   const all = await this.questionModel.find();
   //   console.log(
-  //     "👉 ALL TEST IDs IN DB:",
   //     all.map((q) => q.testId),
   //   );
 
@@ -21,18 +20,35 @@ export class QuestionsService {
   //     testId: new Types.ObjectId(testId),
   //   });
 
-  //   console.log("👉 FILTERED RESULT:", data);
-
   //   return data;
   // }
 
   // async saveMany(data: any[]) {
   //   return this.questionModel.insertMany(data);
   // }
-  async getByTest(testId: string | Types.ObjectId) {
-    return this.questionModel.find({ testId });
-  }
+  // async getByTest(testId: string | Types.ObjectId) {
+  //   return this.questionModel.find({ testId });
+  // }
+  // async getByTest(testId: string) {
+  //   const objectId = new Types.ObjectId(testId);
 
+  //   const all = await this.questionModel.find();
+  //   console.log(
+  //     "ALL TEST IDs:",
+  //     all.map((q) => q.testId),
+  //   );
+
+  //   const data = await this.questionModel.find({ testId: objectId });
+
+  //   console.log("FILTERED:", data);
+
+  //   return data;
+  // }
+  async getByTest(testId: string) {
+    return this.questionModel.find({
+      testId: new Types.ObjectId(testId),
+    });
+  }
   async saveMany(data: any[]) {
     return this.questionModel.insertMany(data);
   }
