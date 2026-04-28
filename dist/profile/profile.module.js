@@ -12,13 +12,17 @@ const mongoose_1 = require("@nestjs/mongoose");
 const profile_schema_1 = require("./schema/profile.schema");
 const profile_service_1 = require("./profile.service");
 const profile_controller_1 = require("./profile.controller");
+const user_schema_1 = require("../users/schema/user.schema");
 let ProfileModule = class ProfileModule {
 };
 exports.ProfileModule = ProfileModule;
 exports.ProfileModule = ProfileModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: profile_schema_1.Profile.name, schema: profile_schema_1.ProfileSchema }]),
+            mongoose_1.MongooseModule.forFeature([
+                { name: profile_schema_1.Profile.name, schema: profile_schema_1.ProfileSchema },
+                { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
+            ]),
         ],
         providers: [profile_service_1.ProfileService],
         controllers: [profile_controller_1.ProfileController],

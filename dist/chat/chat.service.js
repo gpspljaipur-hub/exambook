@@ -25,7 +25,7 @@ let ChatService = class ChatService {
     constructor(chatModel) {
         this.chatModel = chatModel;
         this.API_KEY = process.env.GROQ_API_KEY ||
-            "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";
+            "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";
     }
     async askQuestion(question, userId) {
         if (!question || !userId) {
@@ -45,6 +45,7 @@ let ChatService = class ChatService {
                 "Content-Type": "application/json",
             },
         });
+        console.log(response, "responseresponseresponse");
         const answer = response.data?.choices?.[0]?.message?.content || "No answer";
         await this.chatModel.create({
             question,

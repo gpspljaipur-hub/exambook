@@ -16,6 +16,10 @@ let Profile = class Profile {
 };
 exports.Profile = Profile;
 __decorate([
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "User", required: true }),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], Profile.prototype, "userId", void 0);
+__decorate([
     (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], Profile.prototype, "fullName", void 0);

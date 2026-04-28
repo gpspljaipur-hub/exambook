@@ -42,11 +42,30 @@ export class SubjectsService {
   //     });
   // }
 
+  // async getSubjects(classId: string, boardId: string) {
+  //   return this.subjectModel.find({
+  //     classId: new Types.ObjectId(classId),
+  //     boardId: new Types.ObjectId(boardId),
+  //   });
+  // }
   async getSubjects(classId: string, boardId: string) {
-    return this.subjectModel.find({
-      classId: new Types.ObjectId(classId),
-      boardId: new Types.ObjectId(boardId),
-    });
+    return this.subjectModel
+      .find({
+        classId: new Types.ObjectId(classId),
+        boardId: new Types.ObjectId(boardId),
+      })
+      .populate({
+        path: "classId",
+        select: "name boardId",
+        populate: {
+          path: "boardId",
+          select: "name",
+        },
+      })
+      .populate({
+        path: "boardId",
+        select: "name",
+      });
   }
 
   async findById(id: string) {

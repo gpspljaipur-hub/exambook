@@ -28,7 +28,7 @@ __decorate([
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Test.prototype, "subjectId", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Chapter", required: true, unique: true }),
+    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: "Chapter", required: true }),
     __metadata("design:type", mongoose_2.Types.ObjectId)
 ], Test.prototype, "chapterId", void 0);
 __decorate([
@@ -39,4 +39,5 @@ exports.Test = Test = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], Test);
 exports.TestSchema = mongoose_1.SchemaFactory.createForClass(Test);
+exports.TestSchema.index({ chapterId: 1, language: 1 }, { unique: true });
 //# sourceMappingURL=test.schema.js.map

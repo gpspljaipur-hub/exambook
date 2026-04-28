@@ -40,9 +40,22 @@ let SubjectsService = class SubjectsService {
         });
     }
     async getSubjects(classId, boardId) {
-        return this.subjectModel.find({
+        return this.subjectModel
+            .find({
             classId: new mongoose_3.Types.ObjectId(classId),
             boardId: new mongoose_3.Types.ObjectId(boardId),
+        })
+            .populate({
+            path: "classId",
+            select: "name boardId",
+            populate: {
+                path: "boardId",
+                select: "name",
+            },
+        })
+            .populate({
+            path: "boardId",
+            select: "name",
         });
     }
     async findById(id) {

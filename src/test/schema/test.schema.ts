@@ -14,7 +14,8 @@ export class Test {
   @Prop({ type: Types.ObjectId, ref: "Subject", required: true })
   subjectId!: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: "Chapter", required: true, unique: true })
+  // ✅ FIXED (removed unique)
+  @Prop({ type: Types.ObjectId, ref: "Chapter", required: true })
   chapterId!: Types.ObjectId;
 
   @Prop({ required: true })
@@ -22,3 +23,6 @@ export class Test {
 }
 
 export const TestSchema = SchemaFactory.createForClass(Test);
+
+// ✅ IMPORTANT
+TestSchema.index({ chapterId: 1, language: 1 }, { unique: true });

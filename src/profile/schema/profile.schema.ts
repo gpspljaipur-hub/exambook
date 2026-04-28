@@ -5,6 +5,9 @@ export type ProfileDocument = Profile & Document;
 
 @Schema({ timestamps: true })
 export class Profile {
+  @Prop({ type: Types.ObjectId, ref: "User", required: true })
+  userId!: Types.ObjectId;
+
   @Prop()
   fullName?: string;
 

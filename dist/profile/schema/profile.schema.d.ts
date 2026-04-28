@@ -1,6 +1,7 @@
 import { Document, Types } from "mongoose";
 export type ProfileDocument = Profile & Document;
 export declare class Profile {
+    userId: Types.ObjectId;
     fullName?: string;
     email?: string;
     mobile?: string;
@@ -17,6 +18,15 @@ export declare const ProfileSchema: import("mongoose").Schema<Profile, import("m
 }, "id"> & {
     id: string;
 }, {
+    userId?: import("mongoose").SchemaDefinitionProperty<Types.ObjectId, Profile, Document<unknown, {}, Profile, {
+        id: string;
+    }, import("mongoose").DefaultSchemaOptions> & Omit<Profile & {
+        _id: Types.ObjectId;
+    } & {
+        __v: number;
+    }, "id"> & {
+        id: string;
+    }> | undefined;
     fullName?: import("mongoose").SchemaDefinitionProperty<string | undefined, Profile, Document<unknown, {}, Profile, {
         id: string;
     }, import("mongoose").DefaultSchemaOptions> & Omit<Profile & {

@@ -3,12 +3,13 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import axios from "axios";
 import { Chat } from "./schema/chat.schema";
+import { log } from "console";
 
 @Injectable()
 export class ChatService {
   private API_KEY =
     process.env.GROQ_API_KEY ||
-    "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";
+    "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";
 
   constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>) {}
 
@@ -35,7 +36,7 @@ export class ChatService {
         },
       },
     );
-
+    console.log(response, "responseresponseresponse");
     const answer = response.data?.choices?.[0]?.message?.content || "No answer";
 
     await this.chatModel.create({

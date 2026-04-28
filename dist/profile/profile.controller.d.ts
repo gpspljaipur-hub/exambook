@@ -9,17 +9,13 @@ export declare class ProfileController {
     } & {
         id: string;
     }) | null>;
-    getProfile(mobile?: string): Promise<(import("mongoose").Document<unknown, {}, import("./schema/profile.schema").Profile, {}, import("mongoose").DefaultSchemaOptions> & import("./schema/profile.schema").Profile & {
+    getProfile(mobile?: string): Promise<(import("./schema/profile.schema").Profile & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;
-    } & {
-        id: string;
-    }) | (import("mongoose").Document<unknown, {}, import("./schema/profile.schema").Profile, {}, import("mongoose").DefaultSchemaOptions> & import("./schema/profile.schema").Profile & {
+    }) | (import("./schema/profile.schema").Profile & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;
-    } & {
-        id: string;
     })[] | null>;
 }
