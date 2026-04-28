@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { ClassModel } from "./schema/class.schema";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 
 @Injectable()
 export class ClassesService {
@@ -11,17 +11,27 @@ export class ClassesService {
   ) {}
 
   async create(name: string, boardId: string) {
-    const exists = await this.classModel.findOne({ name, boardId });
+    const objectId = new Types.ObjectId(boardId);
+
+    const exists = await this.classModel.findOne({
+      name,
+      boardId: objectId,
+    });
 
     if (exists) {
       throw new BadRequestException("Class already exists");
     }
 
-    return this.classModel.create({ name, boardId });
+    return this.classModel.create({
+      name,
+      boardId: objectId,
+    });
   }
 
   async getClasses(boardId: string) {
-    return this.classModel.find({ boardId });
+    return this.classModel.find({
+      boardId: new Types.ObjectId(boardId),
+    });
   }
 
   async findById(id: string) {

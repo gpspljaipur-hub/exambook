@@ -30,7 +30,7 @@ export class ChaptersService {
       name,
       subjectId,
       classId,
-      boardId, // ✅ save it
+      boardId,
     });
   }
 

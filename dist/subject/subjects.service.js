@@ -17,21 +17,32 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const subject_schema_1 = require("./schema/subject.schema");
 const mongoose_2 = require("mongoose");
+const mongoose_3 = require("mongoose");
 let SubjectsService = class SubjectsService {
     constructor(subjectModel) {
         this.subjectModel = subjectModel;
     }
-    async addSubject(name, classId) {
-        const exists = await this.subjectModel.findOne({ name, classId });
+    async addSubject(name, classId, boardId) {
+        const classObjectId = new mongoose_3.Types.ObjectId(classId);
+        const boardObjectId = new mongoose_3.Types.ObjectId(boardId);
+        const exists = await this.subjectModel.findOne({
+            name,
+            classId: classObjectId,
+            boardId: boardObjectId,
+        });
         if (exists) {
             throw new common_1.BadRequestException("Subject already exists");
         }
-        return this.subjectModel.create({ name, classId });
+        return this.subjectModel.create({
+            name,
+            classId: classObjectId,
+            boardId: boardObjectId,
+        });
     }
-    async getSubjects(classId) {
-        return this.subjectModel.find({ classId }).populate({
-            path: "classId",
-            populate: { path: "boardId", select: "name" },
+    async getSubjects(classId, boardId) {
+        return this.subjectModel.find({
+            classId: new mongoose_3.Types.ObjectId(classId),
+            boardId: new mongoose_3.Types.ObjectId(boardId),
         });
     }
     async findById(id) {

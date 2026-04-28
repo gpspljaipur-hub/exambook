@@ -20,10 +20,10 @@ let SubjectsController = class SubjectsController {
         this.subjectsService = subjectsService;
     }
     addSubject(body) {
-        return this.subjectsService.addSubject(body.name, body.classId);
+        return this.subjectsService.addSubject(body.name, body.classId, body.boardId);
     }
-    getSubject(classId) {
-        return this.subjectsService.getSubjects(classId);
+    getSubjects(body) {
+        return this.subjectsService.getSubjects(body.classId, body.boardId);
     }
 };
 exports.SubjectsController = SubjectsController;
@@ -36,11 +36,11 @@ __decorate([
 ], SubjectsController.prototype, "addSubject", null);
 __decorate([
     (0, common_1.Post)("get-subject"),
-    __param(0, (0, common_1.Body)("classId")),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], SubjectsController.prototype, "getSubject", null);
+], SubjectsController.prototype, "getSubjects", null);
 exports.SubjectsController = SubjectsController = __decorate([
     (0, common_1.Controller)("subjects"),
     __metadata("design:paramtypes", [subjects_service_1.SubjectsService])

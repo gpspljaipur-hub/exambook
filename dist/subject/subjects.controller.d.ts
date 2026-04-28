@@ -9,7 +9,7 @@ export declare class SubjectsController {
     } & {
         id: string;
     }>;
-    getSubject(classId: string): Promise<(import("mongoose").Document<unknown, {}, import("./schema/subject.schema").Subject, {}, import("mongoose").DefaultSchemaOptions> & import("./schema/subject.schema").Subject & {
+    getSubjects(body: any): Promise<(import("mongoose").Document<unknown, {}, import("./schema/subject.schema").Subject, {}, import("mongoose").DefaultSchemaOptions> & import("./schema/subject.schema").Subject & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;

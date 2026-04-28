@@ -22,14 +22,23 @@ let ClassesService = class ClassesService {
         this.classModel = classModel;
     }
     async create(name, boardId) {
-        const exists = await this.classModel.findOne({ name, boardId });
+        const objectId = new mongoose_2.Types.ObjectId(boardId);
+        const exists = await this.classModel.findOne({
+            name,
+            boardId: objectId,
+        });
         if (exists) {
             throw new common_1.BadRequestException("Class already exists");
         }
-        return this.classModel.create({ name, boardId });
+        return this.classModel.create({
+            name,
+            boardId: objectId,
+        });
     }
     async getClasses(boardId) {
-        return this.classModel.find({ boardId });
+        return this.classModel.find({
+            boardId: new mongoose_2.Types.ObjectId(boardId),
+        });
     }
     async findById(id) {
         return this.classModel.findById(id);

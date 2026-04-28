@@ -27,4 +27,5 @@ exports.ClassModel = ClassModel = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], ClassModel);
 exports.ClassSchema = mongoose_1.SchemaFactory.createForClass(ClassModel);
+exports.ClassSchema.index({ name: 1, boardId: 1 }, { unique: true });
 //# sourceMappingURL=class.schema.js.map

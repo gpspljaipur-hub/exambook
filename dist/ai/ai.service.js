@@ -15,7 +15,7 @@ const axios_1 = __importDefault(require("axios"));
 let AiService = class AiService {
     constructor() {
         this.API_KEY = process.env.GROQ_API_KEY ||
-            "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";
+            "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";
     }
     async generateMCQ(board, cls, subject, chapter, language) {
         let finalLanguage = language;
@@ -25,8 +25,11 @@ let AiService = class AiService {
         else if (subject.toLowerCase().includes("hindi")) {
             finalLanguage = "Hindi";
         }
+        else {
+            finalLanguage = "Punjabi";
+        }
         const prompt = `
-Generate 20 MCQ questions.
+Generate 10 MCQ questions.
 
 Board: ${board}
 Class: ${cls}

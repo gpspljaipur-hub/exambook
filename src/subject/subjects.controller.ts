@@ -6,11 +6,15 @@ export class SubjectsController {
   constructor(private subjectsService: SubjectsService) {}
   @Post("add-subject")
   addSubject(@Body() body: any) {
-    return this.subjectsService.addSubject(body.name, body.classId);
+    return this.subjectsService.addSubject(
+      body.name,
+      body.classId,
+      body.boardId,
+    );
   }
 
   @Post("get-subject")
-  getSubject(@Body("classId") classId: string) {
-    return this.subjectsService.getSubjects(classId);
+  getSubjects(@Body() body: any) {
+    return this.subjectsService.getSubjects(body.classId, body.boardId);
   }
 }
