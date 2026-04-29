@@ -18,16 +18,20 @@ let AiService = class AiService {
             "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";
     }
     async generateMCQ(board, cls, subject, chapter, language) {
-        let finalLanguage = language;
+        let finalLanguage = "English";
+        if (language) {
+            const lang = language.toLowerCase();
+            if (lang === "hindi")
+                finalLanguage = "Hindi";
+            else if (lang === "punjabi")
+                finalLanguage = "Punjabi";
+            else
+                finalLanguage = "English";
+        }
         if (subject.toLowerCase().includes("sanskrit")) {
             finalLanguage = "Sanskrit";
         }
-        else if (subject.toLowerCase().includes("hindi")) {
-            finalLanguage = "Hindi";
-        }
-        else {
-            finalLanguage = "Punjabi";
-        }
+        console.log("👉 FINAL LANGUAGE:", finalLanguage);
         const prompt = `
 Generate 10 MCQ questions.
 
@@ -39,13 +43,13 @@ Chapter: ${chapter}
 Language: ${finalLanguage}
 
 STRICT RULES:
-- Questions MUST be in ${finalLanguage}
-- Options MUST be in ${finalLanguage}
-- Explanation MUST be in ${finalLanguage}
-- DO NOT mix languages
-- If language is Hindi or Sanskrit → DO NOT use English words
-- correctAnswer must be one of: A, B, C, or D
-- DO NOT return array in correctAnswer
+- Use ONLY ${finalLanguage}
+- Do NOT use any other language
+- Do NOT use Punjabi unless language is Punjabi
+- Do NOT mix languages
+- If not in ${finalLanguage}, regenerate internally
+- Use simple ${finalLanguage} words only
+- correctAnswer must be A, B, C, or D
 
 Return ONLY JSON:
 
@@ -61,6 +65,7 @@ Return ONLY JSON:
         try {
             const response = await axios_1.default.post("https://api.groq.com/openai/v1/chat/completions", {
                 model: "llama-3.3-70b-versatile",
+                temperature: 0.2,
                 messages: [
                     {
                         role: "user",
@@ -75,19 +80,45 @@ Return ONLY JSON:
             });
             let text = response.data.choices[0].message.content;
             console.log("👉 RAW AI:", text);
-            text = text.replace(/```json|```/g, "");
-            try {
-                return JSON.parse(text);
+            text = text.replace(/```json|```/g, "").trim();
+            const parsed = JSON.parse(text);
+            if (finalLanguage === "English") {
+                const hasPunjabi = /[ਅ-੿]/.test(text);
+                if (hasPunjabi) {
+                    console.log("⚠️ Punjabi detected → retrying...");
+                    return this.retry(prompt);
+                }
             }
-            catch {
-                console.log("⚠️ Invalid JSON from AI:", text);
-                throw new Error("Invalid JSON format from AI");
-            }
+            return parsed;
         }
         catch (error) {
-            console.error("GROQ ERROR:", error?.response?.data || error);
-            throw error;
+            console.log("⚠️ FIRST TRY FAILED → RETRY");
+            return this.retry(prompt);
         }
+    }
+    async retry(prompt) {
+        const retryPrompt = `
+Previous response was invalid or wrong language.
+
+${prompt}
+
+IMPORTANT:
+- STRICTLY follow language rules
+- Return ONLY valid JSON
+`;
+        const response = await axios_1.default.post("https://api.groq.com/openai/v1/chat/completions", {
+            model: "llama-3.3-70b-versatile",
+            temperature: 0.1,
+            messages: [{ role: "user", content: retryPrompt }],
+        }, {
+            headers: {
+                Authorization: `Bearer ${this.API_KEY}`,
+                "Content-Type": "application/json",
+            },
+        });
+        let text = response.data.choices[0].message.content;
+        text = text.replace(/```json|```/g, "").trim();
+        return JSON.parse(text);
     }
 };
 exports.AiService = AiService;

@@ -46,4 +46,51 @@ export class ChatService {
     });
     return { answer };
   }
+
+  // async askQuestion(question: string, userId: string, file?: any) {
+  //   if (!question || !userId) {
+  //     throw new BadRequestException("question and userId required");
+  //   }
+
+  //   let imageUrl = "";
+
+  //   if (file) {
+  //     imageUrl = `http://localhost:3000/uploads/${file.filename}`;
+  //   }
+
+  //   const prompt = imageUrl ? `${question}\nImage: ${imageUrl}` : question;
+
+  //   const response = await axios.post(
+  //     "https://api.groq.com/openai/v1/chat/completions",
+  //     {
+  //       model: "llama-3.3-70b-versatile",
+  //       messages: [
+  //         {
+  //           role: "user",
+  //           content: prompt,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${this.API_KEY}`,
+  //         "Content-Type": "application/json",
+  //       },
+  //     },
+  //   );
+
+  //   const answer = response.data?.choices?.[0]?.message?.content || "No answer";
+
+  //   await this.chatModel.create({
+  //     question,
+  //     answer,
+  //     userId,
+  //     image: imageUrl, // ✅ save image
+  //   });
+
+  //   return {
+  //     answer,
+  //     image: imageUrl,
+  //   };
+  // }
 }

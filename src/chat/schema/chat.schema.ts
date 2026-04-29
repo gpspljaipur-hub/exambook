@@ -13,6 +13,8 @@ export class Chat {
 
   @Prop({ required: true })
   userId!: string;
+  @Prop()
+  image?: string;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);

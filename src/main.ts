@@ -2,6 +2,8 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import * as dotenv from "dotenv";
 import * as os from "os";
+import { join } from "path";
+import * as express from "express";
 
 // async function bootstrap() {
 //   dotenv.config();
@@ -41,6 +43,8 @@ async function bootstrap() {
   app.enableCors();
 
   const port = process.env.PORT || 3000;
+  app.use("/uploads", express.static(join(__dirname, "..", "uploads")));
+
   await app.listen(port, "0.0.0.0");
 
   console.log(`Server running on port ${port}`);

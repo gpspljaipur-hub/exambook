@@ -4,6 +4,7 @@ export declare class Chat {
     question: string;
     answer: string;
     userId: string;
+    image?: string;
 }
 export declare const ChatSchema: import("mongoose").Schema<Chat, import("mongoose").Model<Chat, any, any, any, any, any, Chat>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Chat, Document<unknown, {}, Chat, {
     id: string;
@@ -33,6 +34,15 @@ export declare const ChatSchema: import("mongoose").Schema<Chat, import("mongoos
         id: string;
     }> | undefined;
     userId?: import("mongoose").SchemaDefinitionProperty<string, Chat, Document<unknown, {}, Chat, {
+        id: string;
+    }, import("mongoose").DefaultSchemaOptions> & Omit<Chat & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }, "id"> & {
+        id: string;
+    }> | undefined;
+    image?: import("mongoose").SchemaDefinitionProperty<string | undefined, Chat, Document<unknown, {}, Chat, {
         id: string;
     }, import("mongoose").DefaultSchemaOptions> & Omit<Chat & {
         _id: import("mongoose").Types.ObjectId;
