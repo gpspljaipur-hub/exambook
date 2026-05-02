@@ -25,7 +25,7 @@ let ChatService = class ChatService {
     constructor(chatModel) {
         this.chatModel = chatModel;
         this.API_KEY = process.env.GROQ_API_KEY ||
-            "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";
+            "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";
     }
     async askQuestion(question, userId) {
         if (!question || !userId) {

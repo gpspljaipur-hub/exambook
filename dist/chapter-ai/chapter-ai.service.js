@@ -25,7 +25,7 @@ let ChapterAiService = class ChapterAiService {
         this.chapterModel = chapterModel;
         this.contentModel = contentModel;
         this.API_KEY = process.env.GROQ_API_KEY ||
-            "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";
+            "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";
     }
     async generateByIds(dto) {
         const { boardId, classId, subjectId, chapterId } = dto;

@@ -9,7 +9,7 @@ import { log } from "console";
 export class ChatService {
   private API_KEY =
     process.env.GROQ_API_KEY ||
-    "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";
+    "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";
 
   constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>) {}
 
